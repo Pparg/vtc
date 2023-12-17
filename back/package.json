@@ -1,0 +1,14 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "api",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "cerbero",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
