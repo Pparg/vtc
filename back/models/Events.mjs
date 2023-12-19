@@ -71,8 +71,7 @@ let Event = sequelize.define('Event', {
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   },
   details: {
-    type: DataTypes.TEXT,
-    allowNull: true
+    type: DataTypes.TEXT
   },
   distance_km: {
     type: DataTypes.DECIMAL(6,2),

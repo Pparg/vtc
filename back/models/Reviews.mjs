@@ -34,12 +34,10 @@ let Review = sequelize.define('Review', {
     allowNull: false
   },
   user_comment: {
-    type: DataTypes.TEXT,
-    allowNull: true
+    type: DataTypes.TEXT
   },
   chofer_comment: {
-    type: DataTypes.TEXT,
-    allowNull: true
+    type: DataTypes.TEXT
   },
   type: {
     type: DataTypes.ENUM('event', 'ride'),

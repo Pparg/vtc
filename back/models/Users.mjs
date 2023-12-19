@@ -8,28 +8,26 @@ let User = sequelize.define('User', {
     autoIncrement: true
   },
   first_name: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false
   },
   last_name: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(100),
     allowNull: false
   },
   password_hash: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(100),
     allowNull: false
   },
   birthday: {
-    type: DataTypes.DATE,
-    allowNull: true
+    type: DataTypes.DATE
   },
   email: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false
   }, 
   phone_number: {
     type: DataTypes.STRING(20),
-    allowNull: true
   }, 
   has_accepted_terms: {
     type: DataTypes.BOOLEAN,

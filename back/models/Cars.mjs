@@ -25,12 +25,10 @@ let Car = sequelize.define('Car', {
     allowNull: false
   },
   description: {
-    type: DataTypes.TEXT,
-    allowNull: true
+    type: DataTypes.TEXT
   },
   name: {
-    type: DataTypes.STRING(255),
-    allowNull: true
+    type: DataTypes.STRING(255)
   }
 }, {
   tableName: 'cars',

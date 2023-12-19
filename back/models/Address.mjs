@@ -32,8 +32,7 @@ let Address = sequelize.define('Address', {
     defaultValue: 'FR'
   },
   comment: {
-    type: DataTypes.TEXT,
-    allowNull: true
+    type: DataTypes.TEXT
   }
 }, {
   tableName: 'address'

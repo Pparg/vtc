@@ -67,12 +67,10 @@ let Ride = sequelize.define('Ride', {
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   },
   accepted_at: {
-    type: DataTypes.DATE,
-    allowNull: true
+    type: DataTypes.DATE
   },
   comments: {
-    type: DataTypes.TEXT,
-    allowNull: true
+    type: DataTypes.TEXT
   },
   distance_km: {
     type: DataTypes.DECIMAL(6,2),
