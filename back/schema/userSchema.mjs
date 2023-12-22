@@ -23,3 +23,5 @@ let UserSchema = z.object({
     message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.',
   })
 })
+
+export default UserSchema
