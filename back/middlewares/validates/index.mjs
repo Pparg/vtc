@@ -1,5 +1,3 @@
-import {safeParse, parse} from 'zod'
-
 import addressSchema from '../../schema/addressSchema.mjs'
 import carSchema from '../../schema/carSchema.mjs'
 import choferSchema from '../../schema/choferSchema.mjs'
@@ -27,7 +25,7 @@ let validateSchema = (name, is_partial = false) => {
           message: 'Schéma non trouvé.'
         })
       }
-      let validated_data = is_partial ? safeParse(schema, req.body) : parse(schema, req.body)
+      let validated_data = is_partial ? schema.safeParse(req.body) : schema.parse(req.body)
 
       if (validated_data.success) {
         req.data = validated_data.data
