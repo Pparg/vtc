@@ -1,8 +1,19 @@
 import { Router } from "express";
-import UserRouter from "./users/userrouter.mjs";
+
+import { login, logout, createAccount } from "../controllers/auth_controller.mjs";
 
 let router = Router()
 
-router.use('/users', UserRouter)
+// Authentification
+router.get('/login', login )
+router.get('/logout', logout)
+router.post('/new_account', createAccount )
+
+// Api
+
+// Admin
+
+// Chofer
+
 
 export default router

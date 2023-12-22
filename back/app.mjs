@@ -15,7 +15,7 @@ app.use(json())
 
 app.use(corsMiddleware())
 
-app.use('/api', router)
+app.use('/', router)
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
