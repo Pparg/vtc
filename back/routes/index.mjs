@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { login, logout, createAccount } from "../controllers/auth_controller.mjs";
-import validateSchema from "../middlewares/validates/index.mjs";
+import validateSchema from "../middlewares/validates/body.mjs";
 
 import adminRouter from './admin/index.mjs'
 
