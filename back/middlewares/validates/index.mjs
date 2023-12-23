@@ -5,6 +5,7 @@ import eventSchema from '../../schema/eventSchema.mjs'
 import notificationSchema from '../../schema/notificationSchema.mjs'
 import rideSchema from '../../schema/rideSchema.mjs'
 import userSchema from '../../schema/userSchema.mjs'
+import roleSchema from '../../schema/roleSchema.mjs'
 
 let schemas = {
   user: userSchema,
@@ -14,6 +15,7 @@ let schemas = {
   notification: notificationSchema,
   address: addressSchema,
   chofer: choferSchema,
+  role: roleSchema
 };
 
 let validateSchema = (name, is_partial = false) => {

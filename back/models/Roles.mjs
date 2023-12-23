@@ -14,7 +14,8 @@ let Role = sequelize.define('Role', {
     allowNull: false
   }
 }, {
-  tableName: 'roles'
+  tableName: 'roles',
+  timestamps: false
 })
 
 User.belongsTo(Role, {foreignKey: 'role_id'})
