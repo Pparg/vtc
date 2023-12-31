@@ -1,29 +1,26 @@
 import User from "../models/Users.mjs"
 
-import { hashPassword, comparePassword } from "../utils/security/password.mjs"
+import { authenticateUser } from "../utils/authentication/authUser.mjs"
+import { generateToken } from "../utils/jwt/jwtToken.mjs"
 
-let login = (req, res) => {
-  res.send({
-    accion: 'login'
-  })
+// [POST] api/auth/login
+let login = async (req, res) => {
+  let authUser = await authenticateUser(req.data.email, req.data.password)
+  if (authUser.success) {
+    let token = generateToken({user_id: authUser.user_id})
+    res.successResponse(200, {
+      message: 'Connecté'
+    } )
+  } else {
+    res.errorResponse(400, authUser)
+  }
 }
 
+// [GET] api/auth/logout
 let logout = (req, res) => {
   res.send({
     accion: 'logout'
   })
 }
 
-let createAccount = async (req, res) => {
-  let hashedPassword = await hashPassword(req.body.password)
-  try {
-    let new_user = await User.create(req.body)
-    res.status(201).json(new_user)
-  } catch (error) {
-    res.status(500).json({
-      error: error.message
-    })
-  }
-}
-
-export {login, logout, createAccount}
+export {login, logout}

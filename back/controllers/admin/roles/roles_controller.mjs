@@ -1,4 +1,3 @@
-import { NEVER } from 'zod'
 import Role from '../../../models/Roles.mjs'
 
 
@@ -6,15 +5,9 @@ import Role from '../../../models/Roles.mjs'
 let index = async (req, res) => {
   try {
     let roles = await Role.findAll()
-    res.status(200).json({
-      success: true,
-      data: roles
-    })
+    res.successResponse(200, roles)
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      errors: error.message
-    })
+    res.errorResponse(500, error.message)
   }
 }
 
@@ -22,17 +15,10 @@ let index = async (req, res) => {
 let create = async (req, res) => {
   try {
     let new_role = await Role.create(req.body)
-    res.status(201).json({
-      success: true,
-      data: new_role
-    })
+    res.successResponse(200, new_role)
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      errors: error.errors
-    })
+    res.errorResponse(400, error.errors)
   }
-  
 }
 
 // [DELETE] /admin/roles/:id
@@ -42,24 +28,14 @@ let remove = async (req, res) => {
     let role_to_delete = await Role.findByPk(role_id)
     if (role_to_delete) {
       await role_to_delete.destroy()
-      res.status(200).json({
-        success: true
-      })
+      res.successResponse(201)
     } else {
-      res.status(400).json({
-        success: false,
-        errors: [
-          {
-            controller: 'roles_controller',
-            message: 'Rôle non trouvé.'
-          }
-        ]
+      res.errorResponse(400, {
+        message: 'Rôle invalide.'
       })
     }
   } catch (error) {
-    res.status(500).json({
-      errors: error.message
-    })
+    res.errorResponse(500, error.message)
   }
 }
 
@@ -68,9 +44,7 @@ let update = (req, res) => {
   try {
     
   } catch (error) {
-    res.status(500).json({
-      errors: error.message
-    })
+    res.errorResponse(500, error.message)
   }
 }
 
