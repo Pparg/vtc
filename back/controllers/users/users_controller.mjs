@@ -5,8 +5,8 @@ import { hashPassword, comparePassword } from "../../utils/security/password.mjs
 
 // [POST] /api/users/register
 let create = async (req, res) => {
-  let hashedPassword = await hashPassword(req.data.password)
   try {
+    let hashedPassword = await hashPassword(req.data.password)
     let user_email = req.data.email
     let is_user = await User.findOne({ where: {email: user_email}})
     if (is_user) {
@@ -14,12 +14,19 @@ let create = async (req, res) => {
         message: 'Ce compte existe déjà.'
       })
     } else {
-      let new_user = await User.create({
-        ...req.data,
-        password: hashedPassword
-      })
-      let {user_info, password} = new_user
-      res.successResponse(200, user_info)
+      let is_admin = req.user && (req.user.role === 'admin')
+      let role = is_admin ? await Role.findOne({where: {name: req.data.role}}) : await Role.findOne({where: {name: 'user'}})
+      if (role) {
+        let new_user = await User.create({
+          ...req.data,
+          password: hashedPassword,
+          role_id: role.id
+        })
+        let {user_info, password} = new_user
+        res.successResponse(200, user_info)
+      } else {
+        res.errorResponse(400, {message: 'Role inconnue.'})
+      }
     }
   } catch (error) {
     res.errorResponse(500, error.message)
@@ -47,7 +54,8 @@ let remove = async (req, res) => {
 let get = async (req, res) => {
   try {
     let users = await User.findAll()
-    res.successResponse(200, users)
+    let user_info = users
+    res.successResponse(200, user_info)
   } catch (error) {
     res.errorResponse(500, error.message)
   }
@@ -56,7 +64,7 @@ let get = async (req, res) => {
 // [GET] /api/users/:id
 let show = async (req, res) => {
   try {
-    let user = await User.findOne({ where: {id: req.params.id}})
+    let user = await User.findOne({ where: {id: req.user.id}})
     if (user) {
       res.successResponse(200, user)
     } else {

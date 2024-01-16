@@ -18,7 +18,28 @@ let Role = sequelize.define('Role', {
   timestamps: false
 })
 
-User.belongsTo(Role, {foreignKey: 'role_id'})
-Chofer.belongsTo(Role, {foreignKey: 'role_id'})
+Role.hasMany(User, {
+  foreignKey: 'role_id',
+  sourceKey: 'id',
+  as: 'user_role'
+})
+
+Role.hasMany(Chofer, {
+  foreignKey: 'role_id',
+  sourceKey: 'id',
+  as: 'chofer_role'
+})
+User.belongsTo(Role, {
+  foreignKey: 'role_id',
+  targetKey: 'id',
+  as: 'user_role'
+})
+
+Chofer.belongsTo(Role, {
+  foreignKey: 'role_id',
+  targetKey: 'id',
+  as: 'chofer_role'
+})
+
 
 export default Role

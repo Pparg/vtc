@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from "../config/database.mjs";
+import Role from "./Roles.mjs";
 
 
 let Chofer = sequelize.define('Chofer', {
@@ -37,6 +38,5 @@ let Chofer = sequelize.define('Chofer', {
 }, {
   tableName: 'chofers'
 })
-
 
 export default Chofer

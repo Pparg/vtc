@@ -1,4 +1,4 @@
-import User from "../models/Users.mjs"
+import Role from "../models/Roles.mjs"
 
 import { authenticateUser } from "../utils/authentication/authUser.mjs"
 import { generateToken } from "../utils/jwt/jwtToken.mjs"
@@ -7,9 +7,13 @@ import { generateToken } from "../utils/jwt/jwtToken.mjs"
 let login = async (req, res) => {
   let authUser = await authenticateUser(req.data.email, req.data.password)
   if (authUser.success) {
-    let token = generateToken({user_id: authUser.user_id})
+    let user_role = await Role.findOne({where: {name: authUser.role}})
+    let token = generateToken({
+      id: authUser.id,
+      role: user_role.name
+    })
     res.successResponse(200, {
-      message: 'Connecté'
+      token: token
     } )
   } else {
     res.errorResponse(400, authUser)
@@ -18,9 +22,7 @@ let login = async (req, res) => {
 
 // [GET] api/auth/logout
 let logout = (req, res) => {
-  res.send({
-    accion: 'logout'
-  })
+  res.successResponse(201)
 }
 
 export {login, logout}

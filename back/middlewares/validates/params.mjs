@@ -14,7 +14,6 @@ export default function validateParams (param, type) {
         is_valid = typeof param_value === 'string'
         break
       default:
-        console.log("here2")
         is_valid = false
     }
 

@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from "../config/database.mjs";
+import Role from "./Roles.mjs";
 
 let User = sequelize.define('User', {
   id: {

@@ -1,7 +1,7 @@
-import Role from '../../../models/Roles.mjs'
+import Role from "../../models/Roles.mjs"
 
 
-// [GET] /admin/roles
+// [GET] /roles
 let index = async (req, res) => {
   try {
     let roles = await Role.findAll()
@@ -11,17 +11,17 @@ let index = async (req, res) => {
   }
 }
 
-// [POST] /admin/roles
+// [POST] /roles
 let create = async (req, res) => {
   try {
-    let new_role = await Role.create(req.body)
+    let new_role = await Role.create(req.data)
     res.successResponse(200, new_role)
   } catch (error) {
     res.errorResponse(400, error.errors)
   }
 }
 
-// [DELETE] /admin/roles/:id
+// [DELETE] /roles/:id
 let remove = async (req, res) => {
   try {
     let role_id = req.params.id
@@ -39,7 +39,7 @@ let remove = async (req, res) => {
   }
 }
 
-// [PATCH] /admin/roles/:id
+// [PATCH] /roles/:id
 let update = (req, res) => {
   try {
     
