@@ -14,7 +14,7 @@ let login = async (req, res) => {
     })
     res.successResponse(200, {
       token: token
-    } )
+    })
   } else {
     res.errorResponse(400, authUser)
   }
