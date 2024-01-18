@@ -11,7 +11,7 @@
     },
     color: {
       type: String,
-      default: 'red'
+      default: '#EFF2F4'
     }
   });
 
@@ -26,5 +26,6 @@
 
   .icon {
     cursor: pointer;
+    font-weight: 900;
   }
 </style>

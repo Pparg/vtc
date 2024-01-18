@@ -5,6 +5,8 @@
   import InputNumber from './components/InputNumber.vue';
   import Icon from './components/Icon.vue'
   
+  import Home from '../pages/home/App.vue'
+
   import { ref } from 'vue';
 
 
@@ -15,19 +17,9 @@
 </script>
 
 <template>
-  <main>
-    hello
-  </main>
+  <Home/>
 </template>
 
 <style scoped>
-
-  body{
-    border: 1px solid red;
-  }
-
-  /* main {
-    border: 1px solid;
-  } */
 
 </style>
