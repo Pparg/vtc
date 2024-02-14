@@ -12,11 +12,13 @@ import './assets/fonts/fonts.scss'
 import './assets/styles/global.scss'
 
 import App from './App.vue'
+import Dashboard from '../pages/dashboard/App.vue'
 import router from './router'
 
 
 const pinia = createPinia();
 const app = createApp(App)
+const dashboard = createApp(Dashboard)
 
 app.use(pinia)
 
@@ -34,7 +36,7 @@ let maintain_session = async () => {
         }
       })
       if (session.status === 200) {
-        authStore.setUser(session.data.user_data)
+        authStore.setUser(session.data.user_data, session.data.role)
         authStore.setAdmin(session.data.isAdmin)
       }
     } catch (error) {

@@ -33,7 +33,7 @@
       let user_login = await createAccount(user_info.value)
       if (user_login.status === 200) {
         localStorage.setItem('63vtc', user_login.data.token)
-        auth.setUser(user_login.data.user_data)
+        auth.setUser(user_login.data.user_data, user_login.data.role)
         auth.setAdmin(user_login.data.isAdmin)
         router.push('/dashboard')
       }

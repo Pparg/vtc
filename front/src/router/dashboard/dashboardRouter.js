@@ -3,7 +3,10 @@ let DashboardRouter = [
   {
     path: '/',
     name: 'dashboard_home',
-    component: () => import ('../../../pages/home/src/views/SignIn.vue'),
+  }, {
+    path: '/account',
+    name: 'account',
+    component: () => import ('../../../pages/dashboard/src/views/AccountView.vue')
   }
 ]
 

@@ -30,12 +30,11 @@
       let user_login = await login(user_info.value)
       if (user_login.status === 200) {
         localStorage.setItem('63vtc', user_login.data.token)
-        auth.setUser(user_login.data.user_data)
+        auth.setUser(user_login.data.user_data, user_login.data.role)
         auth.setAdmin(user_login.data.isAdmin)
         router.push('/dashboard')
       }
     } catch (error) {
-      console.log(error)
       setErrors(error.response.data.errors)
     }
   };
@@ -47,7 +46,7 @@
     <article class="w-9 container flex border-round">
       <article class="login w-8 flex flex-column m-5 align-items-center">
         <h2 class="text-xl text-center m-0 mb-3">Connectez vous à votre compte</h2>
-        <fieldset class="flex flex-column border-none w-10 flex flex-column gap-2">
+        <fieldset class="flex flex-column border-none w-10 gap-2">
           <label class="text-sm">Adresse email</label>
           <InputTextVue v-model="user_info.email" :placeholder="'nom@mail.com'" />
           <span v-if="fieldHasErrors('email')" class="text-xxs p_errors">{{ getFieldErrorMessage('email') }}</span>

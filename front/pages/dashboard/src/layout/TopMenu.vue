@@ -2,6 +2,7 @@
   import Avatar from '@/components/Avatar.vue';
   import Icon from '@/components/Icon.vue';
   import OverlayPanel from '@/components/OverlayPanel.vue';
+  import Link from '@/components/Link.vue';
 
   import { useAuthStore } from '@/store/auth/authStore';
   import { useRouter } from 'vue-router';
@@ -49,10 +50,14 @@
       <Avatar :label="current_user.first_name[0].toUpperCase()" @click="handleAccountMenu" class="cursor-pointer"></Avatar>
       <OverlayPanel ref="$overlay_panel_account" class="mt-5">
         <template #content>
-          <div class="flex align-items-center gap-2 cursor-pointer hover_option p-1">
-            <Icon :name="'user'"></Icon>
-            <p class="p-0 m-0 text-xs">Informations de profil</p>
-          </div>
+          <Link :to="{name: 'account'}" @click="$overlay_panel_account.hide()">
+            <template #content>
+              <div class="flex align-items-center gap-2 cursor-pointer hover_option p-1">
+                <Icon :name="'user'"></Icon>
+                <p class="p-0 m-0 text-xs">Informations de profil</p>
+              </div>
+            </template>
+          </Link>
           <div class="flex align-items-center gap-2 cursor-pointer hover_option p-1" @click="handleLogOut">
             <Icon :name="'sign-out'"></Icon>
             <p class="p-0 m-0 text-xs">Déconnexion</p>

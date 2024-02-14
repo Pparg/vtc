@@ -16,9 +16,12 @@
 </script>
 
 <template>
-  <RouterView v-slot="{Component}">
-    <component :is="Component" ></component>
-  </RouterView>
+  <div class="test">
+    <RouterView v-slot="{ Component }">
+      <component :is="Component" ></component>
+    </RouterView>
+  </div>
+
 </template>
 
 <style scoped>

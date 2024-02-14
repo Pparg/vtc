@@ -36,7 +36,8 @@ let create = async (req, res) => {
         res.successResponse(200, {
           token: token,
           user_data: user_info,
-          isAdmin: role.name === 'admin'
+          isAdmin: role.name === 'admin',
+          role: role.name
         })
       } else {
         res.errorResponse(400, {message: 'Role inconnue.'})

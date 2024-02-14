@@ -10,6 +10,9 @@
     <LeftMenu />
     <main class="w-full h-screen overflow-y-scroll overflow-x-none">
       <TopMenu />
+      <router-view v-slot="{Component}">
+        <component :is="Component"></component>
+      </router-view>
     </main>
   </div>
 </template>
