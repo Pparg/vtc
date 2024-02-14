@@ -1,6 +1,8 @@
 import Role from "../../models/Roles.mjs"
 import User from "../../models/Users.mjs"
 
+import { generateToken } from "../../utils/jwt/jwtToken.mjs"
+
 import { hashPassword, comparePassword } from "../../utils/security/password.mjs"
 
 // [POST] /api/users/register
@@ -22,8 +24,20 @@ let create = async (req, res) => {
           password: hashedPassword,
           role_id: role.id
         })
-        let {user_info, password} = new_user
-        res.successResponse(200, user_info)
+        let token = generateToken({
+          id: new_user.id,
+          role: role.name
+        })
+        res.cookie('vtc', token, {
+          httpOnly: true,
+          sameSite: 'strict'
+        })
+        let { password, role_id, ...user_info} = new_user.dataValues
+        res.successResponse(200, {
+          token: token,
+          user_data: user_info,
+          isAdmin: role.name === 'admin'
+        })
       } else {
         res.errorResponse(400, {message: 'Role inconnue.'})
       }
