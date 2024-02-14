@@ -5,12 +5,19 @@
   import { createAccount } from '@/utils/authentication/index'
   import { ErrorObject } from '@/composables/errors/index'
 
+  import { useAuthStore } from '@/store/auth/authStore';
+  import { useRouter } from 'vue-router';
+
   import InputText from '@/components/InputText.vue';
   import InputPassword from '@/components/InputPassword.vue';
   import Button from '@/components/Button.vue';
   import Checkbox from '@/components/Checkbox.vue';
 
   let { setErrors, fieldHasErrors, getFieldErrorMessage } = ErrorObject()
+
+  let router = useRouter()
+
+  let auth = useAuthStore()
 
   let user_info = ref({
     first_name: '',
@@ -25,7 +32,10 @@
     try {
       let user_login = await createAccount(user_info.value)
       if (user_login.status === 200) {
-        console.log('ok')
+        localStorage.setItem('63vtc', user_login.data.token)
+        auth.setUser(user_login.data.user_data)
+        auth.setAdmin(user_login.data.isAdmin)
+        router.push('/dashboard')
       }
     } catch (error) {
       console.log(error.response.data.errors)
