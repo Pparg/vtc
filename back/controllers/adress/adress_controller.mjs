@@ -1,6 +1,6 @@
 import Address from "../../models/Address.mjs";
 
-// [GET] /adress/
+// [GET] /adress
 let index = async (req, res) => {
   try {
     let current_user = req.user

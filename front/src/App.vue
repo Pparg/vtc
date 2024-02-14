@@ -9,7 +9,6 @@
 
   import { ref } from 'vue';
 
-
   let test = ref('');
   let test2 = ref(0);
 
@@ -17,7 +16,9 @@
 </script>
 
 <template>
-  <Home/>
+  <RouterView v-slot="{Component}">
+    <component :is="Component" ></component>
+  </RouterView>
 </template>
 
 <style scoped>

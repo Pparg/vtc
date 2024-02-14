@@ -12,10 +12,14 @@ let UserSchema = z.object({
   }).max(255, {
     message: 'Maximum de 255 caracters.'
   }),
-  has_accepted_terms: z.boolean().optional(),
+  has_accepted_terms: z.boolean().refine((value) => value , {
+    message: 'Vous devez accepter les termes et conditions.'
+  }),
   newsletter: z.boolean().optional(),
   birthday: z.date().optional(),
-  email: z.string().email().max(255),
+  email: z.string().email({
+    message: 'Email invalide.'
+  }).max(255),
   phone_number: z.string().max(20).optional(),
   password: z.string().min(8, {
     message: 'Le mot de passe doit contenir au moins 8 caractères.'

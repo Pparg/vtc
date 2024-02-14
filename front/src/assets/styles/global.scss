@@ -31,6 +31,24 @@ body {
 
 // Reusable styles
 
+.p_errors {
+  color: $delete-button
+}
+
+.bg-text {
+  background-color: $text;
+}
+
+.text-color {
+  color: $text
+}
+
+// List-style
+
+.list-none {
+  list-style: none;
+}
+
 // Display
   .hidden {
     display: none;
@@ -819,140 +837,6 @@ body {
     .border-right-3 {
       border-right-width: 3px;
     }
-
-/* Border Classes */
-
-.border-none {
-  border-width: 0px;
-}
-
-.border-1 {
-  border-width: 1px;
-}
-
-.border-2 {
-  border-width: 2px;
-}
-
-.border-3 {
-  border-width: 3px;
-}
-
-/* Border X Classes */
-
-.border-x-none {
-  border-right-width: 0px;
-  border-left-width: 0px;
-}
-
-.border-x-1 {
-  border-right-width: 1px;
-  border-left-width: 1px;
-}
-
-.border-x-2 {
-  border-right-width: 2px;
-  border-left-width: 2px;
-}
-
-.border-x-3 {
-  border-right-width: 3px;
-  border-left-width: 3px;
-}
-
-/* Border Y Classes */
-
-.border-y-none {
-  border-top-width: 0px;
-  border-bottom-width: 0px;
-}
-
-.border-y-1 {
-  border-top-width: 1px;
-  border-bottom-width: 1px;
-}
-
-.border-y-2 {
-  border-top-width: 2px;
-  border-bottom-width: 2px;
-}
-
-.border-y-3 {
-  border-top-width: 3px;
-  border-bottom-width: 3px;
-}
-
-/* Border Top Classes */
-
-.border-top-none {
-  border-top-width: 0px;
-}
-
-.border-top-1 {
-  border-top-width: 1px;
-}
-
-.border-top-2 {
-  border-top-width: 2px;
-}
-
-.border-top-3 {
-  border-top-width: 3px;
-}
-
-/* Border Left Classes */
-
-.border-left-none {
-  border-left-width: 0px;
-}
-
-.border-left-1 {
-  border-left-width: 1px;
-}
-
-.border-left-2 {
-  border-left-width: 2px;
-}
-
-.border-left-3 {
-  border-left-width: 3px;
-}
-
-/* Border Bottom Classes */
-
-.border-bottom-none {
-  border-bottom-width: 0px;
-}
-
-.border-bottom-1 {
-  border-bottom-width: 1px;
-}
-
-.border-bottom-2 {
-  border-bottom-width: 2px;
-}
-
-.border-bottom-3 {
-  border-bottom-width: 3px;
-}
-
-/* Border Right Classes */
-
-.border-right-none {
-  border-right-width: 0px;
-}
-
-.border-right-1 {
-  border-right-width: 1px;
-}
-
-.border-right-2 {
-  border-right-width: 2px;
-}
-
-.border-right-3 {
-  border-right-width: 3px;
-}
 
 /* Border Style Classes */
 
@@ -2462,6 +2346,13 @@ body {
 }
 
 /* Text Size Classes */
+.text-xxxs {
+  font-size: 0.5rem;
+}
+
+.text-xxs{
+  font-size: 0.65rem;
+}
 
 .text-xs {
   font-size: 0.75rem;
@@ -2549,4 +2440,20 @@ body {
 
 .cursor-move {
   cursor: move;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
 }

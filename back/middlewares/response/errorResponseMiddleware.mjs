@@ -2,7 +2,7 @@
 let errorResponseMiddleware = (req, res, next) => {
   res.errorResponse = (code, message) => {
     return res.status(code).json({
-      success: true,
+      success: false,
       errors: {
         message: message
       }

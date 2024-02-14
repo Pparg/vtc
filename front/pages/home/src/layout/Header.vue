@@ -17,7 +17,7 @@
           <h1>63VTC</h1>          
         </template>
       </Link>
-      <Button v-if="!context" :label="'Se connecter'" :type="'navigation'" :to="{name: 'login'}"></Button>
+      <Button v-if="!context" :label="'Se connecter'" :type="'navigation'" :to="{name: 'home_login'}"></Button>
     </nav>
   </header>
 </template>

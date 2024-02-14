@@ -28,6 +28,10 @@ let Chofer = sequelize.define('Chofer', {
     type: DataTypes.STRING(255),
     allowNull: false
   },
+  available: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
   role_id: {
     type: DataTypes.SMALLINT,
     references: {
@@ -36,7 +40,8 @@ let Chofer = sequelize.define('Chofer', {
     }
   }
 }, {
-  tableName: 'chofers'
+  tableName: 'chofers',
+  timestamps: false
 })
 
 export default Chofer

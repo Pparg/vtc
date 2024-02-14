@@ -5,39 +5,39 @@
 </script>
 
 <template>
-  <main class="home">
+  <div class="home flex flex-column justify-content-between">
     <Header></Header>
-    <section class="content">
+    <main class="content flex">
       <router-view v-slot="{Component}">
-        <Transition name="fade">
+        <component :is="Component"></component>
+        
+        <!-- <Transition>
           <component :is="Component"></component>
-        </Transition>
+        </Transition> -->
       </router-view>
-    </section>
+    </main>
     <Footer></Footer>
-  </main>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 
   .home{
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    min-height: 100vh;
+    height: 100%;
   }
   .fade-enter-active, .fade-leave-active {
-    transition: opacity 0.3s;
+    transition: opacity 0.1s;
   }
 
   .fade-enter, .fade-leave-to {
     opacity: 0;
   }
 
-  section {
+  main.content {
     height: 100%;
     flex: 1;
-    border: 1px solid;
+    overflow-y: scroll;
   }
 
 </style>
