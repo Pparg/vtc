@@ -5,7 +5,8 @@ let choferSchema = z.object({
   last_name: z.string(60),
   phone_number: z.string(20),
   description: z.string(),
-  email: z.string().email().max(255)
+  email: z.string().email().max(255),
+  available: z.boolean
 })
 
 export default choferSchema

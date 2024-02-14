@@ -1,0 +1,30 @@
+
+$small: 576px;
+$medium: 768px;
+$large: 992px;
+$xlarge: 1200px;
+
+
+@mixin small-screen {
+  @media screen and (max-width: ($small - 1)) {
+    @content;
+  }
+}
+
+@mixin medium-screen {
+  @media screen and (min-width: $small) and (max-width: ($medium - 1)) {
+    @content;
+  }
+}
+
+@mixin large-screen {
+  @media screen and (min-width: $medium) and (max-width: ($large - 1)) {
+    @content;
+  }
+}
+
+@mixin xlarge-screen {
+  @media screen and (min-width: $large) {
+    @content;
+  }
+}

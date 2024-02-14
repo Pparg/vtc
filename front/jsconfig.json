@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@components/*": ["./src/components/*"],
+      "@store/*": ["src/store/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

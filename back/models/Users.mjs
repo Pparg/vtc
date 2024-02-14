@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from "../config/database.mjs";
+import Role from "./Roles.mjs";
 
 let User = sequelize.define('User', {
   id: {
@@ -15,7 +16,7 @@ let User = sequelize.define('User', {
     type: DataTypes.STRING(100),
     allowNull: false
   },
-  password_hash: {
+  password: {
     type: DataTypes.STRING(100),
     allowNull: false
   },
