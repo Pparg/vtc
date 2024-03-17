@@ -34,7 +34,7 @@ app.use(pinia)
 
 app.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyDZOFx7cPrYyOm5oNTPZwrbBeLOttYcWfo',
+    // API KEY
     libraries: 'places'
   }
 })
