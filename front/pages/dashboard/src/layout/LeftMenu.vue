@@ -3,6 +3,10 @@
   import Avatar from '@/components/Avatar.vue';
   import Link from '@/components/Link.vue';
 
+  import { useAuthStore } from '@/store/auth/authStore';
+
+  let user = useAuthStore();
+
 </script>
 
 <template>
@@ -14,22 +18,58 @@
     </Link>
     <nav class="flex-1">
       <ul class="list-none p-0 ml-3 mt-5 flex flex-column gap-4">
+        <Link :to="{ name: 'dashboard' }">
+          <template #content>
+            <div class="flex align-items-center gap-2 font-normal">
+              <Icon :name="'home'"></Icon>
+              <p class="p-0 m-0">Accueil</p>
+            </div>
+          </template>
+        </Link>
         <li class="flex flex-row align-items-center gap-2 cursor-pointer">
-          <Icon :name="'home'"></Icon>
-          <p class="p-0 m-0">Accueil</p>
-        </li>
-        <li class="flex flex-row align-items-center gap-2 cursor-pointer">
-          <Icon :name="'car'"></Icon>
+          <Icon :name="'bolt'"></Icon>
           <p class="p-0 m-0">Mes courses</p>
         </li>
-        <li class="flex flex-row align-items-center gap-2 cursor-pointer">
-          <Icon :name="'calendar'"></Icon>
-          <p class="p-0 m-0">Mes événements</p>
-        </li>
-        <li class="flex flex-row align-items-center gap-2 cursor-pointer">
-          <Icon :name="'bookmark'"></Icon>
-          <p class="p-0 m-0">Mes addresses</p>
-        </li>
+        <Link :to="{ name: 'user_address' }">
+          <template #content>
+            <div class="flex align-items-center gap-2 font-normal">
+              <Icon :name="'bookmark'"></Icon>
+              <p class="p-0 m-0">Mes addresses</p>
+            </div>
+          </template>
+        </Link>
+        <Link :to="{ name: 'roles' }" v-if="user.isAdmin">
+          <template #content>
+            <div class="flex align-items-center gap-2 font-normal">
+              <Icon :name="'verified'"></Icon>
+              <p class="p-0 m-0">Rôles</p>
+            </div>
+          </template>
+        </Link>
+        <Link :to="{ name: 'list_of_users' }" v-if="user.isAdmin">
+          <template #content>
+            <div class="flex align-items-center gap-2 font-normal">
+              <Icon :name="'users'"></Icon>
+              <p class="p-0 m-0">Utilisateurs</p>
+            </div>
+          </template>
+        </Link>
+        <Link :to="{name: 'list_of_cars'}" v-if="user.isAdmin">
+          <template #content>
+            <div class="flex align-items-center gap-2 font-normal">
+              <Icon :name="'car'"></Icon>
+              <p class="p-0 m-0">Véhicules</p>
+            </div>
+          </template>
+        </Link>
+        <Link :to="{name: 'notification_list'}" v-if="user.isAdmin">
+          <template #content>
+            <div class="flex align-items-center gap-2 font-normal">
+              <Icon :name="'info-circle'" />
+              <p class="p-0 m-0">Notifications</p>
+            </div>
+          </template>
+        </Link>
       </ul>
     </nav>
   </header>
@@ -42,5 +82,6 @@
   .left_menu {
     background-color: $background-light;
     border-right: 1px solid $border;
+    max-width: 200px;
   }
 </style>

@@ -20,8 +20,11 @@ export let useAuthStore = defineStore('auth', {
     }
   },
   actions: {
-    setUser(user_data) {
-      this.user = user_data
+    setUser(user_data, role) {
+      this.user = {
+        ...user_data,
+        role: role
+      }
       this.isLogged = true
     },
     setAdmin(data) {
@@ -32,6 +35,12 @@ export let useAuthStore = defineStore('auth', {
       this.user = null
       this.isAdmin = false,
       this.isLogged = false
+    },
+    updateUser(data) {
+      this.user = {
+        ...this.user,
+        ...data
+      }
     }
   }
 })

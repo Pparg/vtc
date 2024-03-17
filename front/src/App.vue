@@ -9,16 +9,17 @@
 
   import { ref } from 'vue';
 
-  let test = ref('');
-  let test2 = ref(0);
-
-
 </script>
 
 <template>
-  <RouterView v-slot="{Component}">
-    <component :is="Component" ></component>
-  </RouterView>
+  <div>
+    <Suspense>
+      <RouterView v-slot="{ Component }">
+        <component :is="Component" ></component>
+      </RouterView>
+    </Suspense>
+  </div>
+
 </template>
 
 <style scoped>

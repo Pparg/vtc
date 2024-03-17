@@ -10,10 +10,6 @@
     <main class="content flex">
       <router-view v-slot="{Component}">
         <component :is="Component"></component>
-        
-        <!-- <Transition>
-          <component :is="Component"></component>
-        </Transition> -->
       </router-view>
     </main>
     <Footer></Footer>

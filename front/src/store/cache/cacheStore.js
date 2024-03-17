@@ -2,9 +2,7 @@ import { defineStore } from "pinia";
 
 export let useCacheStore = defineStore('cache', {
   state: () => ({
-    cache: {
-
-    }
+    cache: {}
   }),
   getters: {
     get: (state) => {
@@ -16,13 +14,13 @@ export let useCacheStore = defineStore('cache', {
   },
   actions: {
     remove(key) {
-      this.state.cache = {
-        ...this.state.cache,
+      this.cache = {
+        ...this.cache,
         [key]: null
       }
     },
     add(key, data) {
-      this.state.cache[key] = data
+      this.cache[key] = data
     }
   }
 })

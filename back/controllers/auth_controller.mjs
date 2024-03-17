@@ -24,6 +24,7 @@ let login = async (req, res) => {
     res.successResponse(200, {
       token: token,
       user_data:user_info,
+      role: user_role.name,
       isAdmin: user_role.name === 'admin'
     })
   } else {
@@ -56,10 +57,10 @@ let maintain_session = (req, res) => {
         }
         if (current_account) {
           let {password, role_id, ...account_info} = current_account.dataValues
-          console.log(user.role)
           return res.successResponse(200, {
             user_data: account_info,
-            isAdmin: user.role === 'admin'
+            isAdmin: user.role === 'admin',
+            role: user.role
           })
         } else {
           return res.errorResponse(404, 'Invalid')

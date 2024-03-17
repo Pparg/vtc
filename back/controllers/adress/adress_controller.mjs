@@ -3,9 +3,31 @@ import Address from "../../models/Address.mjs";
 // [GET] /adress
 let index = async (req, res) => {
   try {
+    let page = parseInt(req.query.page || 1)
+    let per_page = parseInt(req.query.per_page || 10)
+    let offset = (page - 1) * per_page
     let current_user = req.user
-    let user_adresses = await Address.findAll({where: {user_id: current_user.id}})
-    res.successResponse(200, user_adresses)
+    let user_adresses = await Address.findAll({
+      where: {
+        user_id: current_user.id
+      },
+      order: [['created_at', 'DESC']],
+      offset: offset,
+      limit: per_page,
+      attributes: ['id', 'address', 'city', 'comment', 'name']
+    })
+    let total_count = await Address.count({
+      where: {
+        user_id: current_user.id
+      }
+    })
+    let total_pages = Math.ceil(total_count / per_page)
+    res.successResponse(200, {
+      data: user_adresses,
+      current_user: page,
+      total_pages: total_pages,
+      total: total_count
+    })
   } catch (error) {
     res.errorResponse(500, error.message)
   }
@@ -15,8 +37,14 @@ let index = async (req, res) => {
 let show = async (req, res) => {
   try {
     let current_user = req.user
-    let adress = await Address.findOne({where: {id: req.params.id}})
-    res.successResponse(200, adress)
+    let adress = await Address.findOne({
+      where: {
+        id: req.params.id,
+        user_id: current_user.id
+      },
+      attributes: ['id', 'address', 'city', 'zip_code', 'country', 'comment', 'name', 'longitude', 'latitude']
+    })
+    res.successResponse(200, adress.dataValues)
   } catch (error) {
     res.errorResponse(500, error.message)
   }
@@ -52,7 +80,7 @@ let remove = async (req, res) => {
     let current_user = req.user
     let adress = await Address.findOne({where: {id: req.params.id, user_id: current_user.id}})
     await adress.destroy()
-    res.successResponse(201)
+    res.successResponse(204)
   } catch (error) {
     res.errorResponse(500, error.message)
   }

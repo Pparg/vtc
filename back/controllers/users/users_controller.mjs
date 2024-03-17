@@ -1,3 +1,4 @@
+import Chofer from "../../models/Chofers.mjs"
 import Role from "../../models/Roles.mjs"
 import User from "../../models/Users.mjs"
 
@@ -36,7 +37,8 @@ let create = async (req, res) => {
         res.successResponse(200, {
           token: token,
           user_data: user_info,
-          isAdmin: role.name === 'admin'
+          isAdmin: role.name === 'admin',
+          role: role.name
         })
       } else {
         res.errorResponse(400, {message: 'Role inconnue.'})
@@ -47,18 +49,20 @@ let create = async (req, res) => {
   }
 }
 
-// [DELETE] /api/users/:id
+// [DELETE] /api/users
 let remove = async (req, res) => {
   try {
     let user = await User.findOne({where: {id: req.params.id}})
-    if (user) {
-      await user.destroy()
-      res.successResponse(201)
-    } else {
-      res.errorResponse(400, {
-        message: 'User inexistant.'
-      })
-    }
+    res.successResponse(200, user.dataValues)
+    // if (user) {
+    //   await user.destroy()
+    //   res.clearCookie('vtc')
+    //   res.successResponse(201)
+    // } else {
+    //   res.errorResponse(400, {
+    //     message: 'User inexistant.'
+    //   })
+    // }
   } catch (error) {
     res.errorResponse(500, error.message)
   }
@@ -67,9 +71,30 @@ let remove = async (req, res) => {
 // [GET] /api/users
 let get = async (req, res) => {
   try {
-    let users = await User.findAll()
-    let user_info = users
-    res.successResponse(200, user_info)
+    let page = parseInt(req.query.page || 1);
+    let per_page = parseInt(req.query.per_page || 10)
+    let offset = (page - 1) * per_page
+    let selected_atributes = ['id', 'last_name', 'first_name', 'created_at', 'last_login']
+    let users = await User.findAll({
+      include: [
+        {
+          model: Role,
+          as: 'user_role',
+          where: {name: 'user'}
+        }
+      ],
+      offset: offset,
+      limit: per_page,
+      attributes: selected_atributes
+    })
+    let total_count = await User.count()
+    let total_pages = Math.ceil(total_count / per_page)
+    res.successResponse(200, {
+      data: users,
+      current_page: page,
+      total_pages: total_pages,
+      total: total_count
+    })
   } catch (error) {
     res.errorResponse(500, error.message)
   }
@@ -91,9 +116,49 @@ let show = async (req, res) => {
   }
 }
 
-// [PATCH] /api/users/:id
+// [PATCH] /api/users
 let edit = async (req, res) => {
-  res.successResponse(200, 'edit')
+  try {
+    let account_id = req.user.id
+    let account_type = req.user.role
+    let current_account = account_type === 'choffer' ? await Chofer.findByPk(account_id) : await User.findByPk(account_id)
+    let updated_user = await current_account.update(req.data, {
+      fields: ['last_name', 'first_name', 'birthday', 'phone_number', 'newsletter']
+    })
+    res.successResponse(200, {
+      last_name: updated_user.first_name,
+      first_name: updated_user.last_name,
+      birthday: updated_user.birthday,
+      phone_number: updated_user.phone_number,
+      newsletter: updated_user.newsletter
+    })
+    
+  } catch (error) {
+    res.errorResponse(500, error)
+  }
 }
 
-export { create, remove, get, show, edit }
+// [PATCH] /api/users/password
+
+let edit_password = async (req, res) => {
+  try {
+    let account_id = req.user.id
+    let account_type = req.user.role
+    let current_user = account_type === 'choffer' ? await Chofer.findByPk(account_id) : await User.findByPk(account_id)
+    let password_is_valid = await comparePassword(req.body.current_password, current_user.password)
+    if (password_is_valid) {
+      let hashedPassword = await hashPassword(req.data.password)
+      current_user.update({password: hashedPassword})
+      res.successResponse(201)
+    } else {
+      res.errorResponse(400, [{
+        path: ['base'],
+        message: 'Mot de passe incorrecte'
+      }])
+    }
+  } catch (error) {
+    res.errorResponse(500, error)
+  }
+}
+
+export { create, remove, get, show, edit, edit_password }

@@ -35,10 +35,12 @@
       justify-content: space-between;
       padding: 5px 20px 5px 20px;
       h1{
-        margin: 0;
+        margin: 0; 
         font-size: 36px;
         font-family: 'Montserrat';
         font-weight: 800;
+        color: #2980b9;
+        
       }
     }
   }

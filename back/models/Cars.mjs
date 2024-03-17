@@ -29,9 +29,20 @@ let Car = sequelize.define('Car', {
   },
   name: {
     type: DataTypes.STRING(255)
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   }
 }, {
   tableName: 'cars',
+  timestamps: true,
+  updatedAt: 'updated_at',
+  createdAt: 'created_at'
 })
 
 
