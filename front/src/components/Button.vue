@@ -28,6 +28,10 @@
       type: String,
       required: false
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   });
 
 </script>
@@ -39,7 +43,7 @@
     </div>
     <div v-else :class="['button flex align-items-center gap-2 cursor-pointer justify-content-center border-round-sm px-3 py-2', type]">
       <Icon v-if="before_icon" :name="before_icon"></Icon>
-      <button >{{ label }}</button>
+      <button>{{ label }}</button>
       <Icon v-if="after_icon" :name="after_icon"/>
     </div>
   </aside>

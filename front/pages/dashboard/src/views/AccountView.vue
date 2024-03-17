@@ -6,82 +6,60 @@
   import Checkbox from '@/components/Checkbox.vue';
   import Button from '@/components/Button.vue';
   import TextArea from '@/components/TextArea.vue';
+  import Calendar from '@/components/Calendar.vue';
+
+  import GeneralInformationView from './account/GeneralInformationView.vue';
+  import PasswordView from './account/PasswordView.vue'
 
   import { useAuthStore } from '@/store/auth/authStore';
 
-  import { ref } from 'vue';
+  import { remove as removeAccount } from '@/utils/account';
+  import { ErrorObject } from '@/composables/errors/index'
 
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+
+
+  let router = useRouter()
   let authStore = useAuthStore();
   
   let current_user = authStore.getUser
 
-  let user_info = ref({
-    first_name: current_user.first_name,
-    last_name: current_user.last_name,
-    password: '',
-    birthday: current_user.birthday,
-    phone_number: current_user.phone_number || '',
-    newsletter: current_user.newsletter
-  });
-
-  let driver_info = ref({
-    description: ''
-  })
-
-  let handleSubmit = () => {
-    console.log('submit')
+  let handleDelete = async () => {
+    try {
+      let remove = await removeAccount(current_user.id)
+      if (remove.status === 201) {
+        authStore.logOut()
+        router.push('/')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
-  let handleDelete = () => {
-    console.log('delete')
-  };
-
-  
+  let current_tab = ref('global');
 
 </script>
 
 <template>
   <section class="pl-3 ">
-    <div class="flex align-items-center justify-content-between pr-2">
-      <h2 class="text-xl">Information de profil</h2>
-      <Button :label="'Supprimer mon compte'" :type="'danger'" @click="handleDelete" v-if="current_user.role === 'user'" ></Button>
-    </div>
-    <fieldset class="flex flex-column gap-2 border-none p-0">
-      <div class="flex flex-row gap-2">
-        <div class="flex flex-column w-4 gap-2">
-          <span>Nom</span>
-          <InputText v-model="user_info.first_name"></InputText>
-        </div>
-        <div class="flex flex-column w-4 gap-2">
-          <span>Prénom</span>
-          <InputText v-model="user_info.last_name"></InputText>
-        </div>
+    <header class="flex flex-column gap-3 mb-4">
+      <div class="flex align-items-center justify-content-between pr-2">
+        <h2 class="text-xl">Information de profil</h2>
+        <Button :label="'Supprimer mon compte'" :type="'danger'" @click="handleDelete" v-if="current_user.role === 'user'" />
       </div>
-      <div class="flex flex-column w-8 gap-2">
-        <span>Email</span>
-        <InputText v-model="current_user.email" disabled></InputText>
-      </div>
-      <div class="flex flex-column w-8 gap-2" v-if="current_user.role === 'user'">
-        <span>Mot de passe</span>
-        <InputPassword v-model="user_info.password"></InputPassword>
-      </div>
-      <div class="flex flex-column w-5 gap-2">
-        <span>Numéro de téléphone</span>
-        <InputText v-model="user_info.phone_number"></InputText>
-      </div>
-      <div class="flex flex-column w-8 gap-2" v-if="current_user.role === 'choffer' || true">
-        <span>Description</span>
-        <TextArea v-model="driver_info.description" :col="1"></TextArea>
-      </div>
-      <div class="flex gap-2 align-items-center" v-if="current_user.role === 'user'">
-        <Checkbox  v-model="user_info.newsletter"/>
-        <label class="text-sm">Recevoir les newsletters</label>
-      </div>
-    </fieldset>
-    <aside class="flex gap-2 mt-3">
-      <Button :label="'Sauvegarder'" @click="handleSubmit"></Button>
-    </aside>
+      <nav class="flex list-none">
+        <li class="px-2 text-sm cursor-pointer" :class="{'border_active pb-1 font-bold': current_tab === 'global'}" @click="current_tab = 'global'">Information Générales</li>
+        <li class="px-2 text-sm cursor-pointer" :class="{ 'border_active pb-1 font-bold': current_tab === 'password' }" @click="current_tab = 'password'">Mot de passe</li>
+      </nav>
+    </header>
+    <GeneralInformationView v-if="current_tab === 'global'" />
+    <PasswordView v-if="current_tab === 'password'" />
   </section>
 </template>
 
-<style></style>
+<style>
+  .border_active {
+    border-bottom: 2px solid;
+  }
+</style>

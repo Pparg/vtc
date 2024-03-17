@@ -34,13 +34,40 @@ body {
 .p_errors {
   color: $delete-button
 }
+.p_valid {
+  color: $confirm-button;
+}
 
 .bg-text {
   background-color: $text;
 }
+.bg-light {
+  background-color: $background-light;
+}
+.bg-primary {
+  background-color: $primary;
+}
+.bg-secondary {
+  background-color: $secondary;
+}
+.bg-error {
+  background-color: $delete-button;
+}
+.bg-confirm {
+  background-color: $confirm-button;
+}
+.bg-accent {
+  background-color: $accent;
+}
 
 .text-color {
   color: $text
+}
+.text-reverse-color{
+  color: $background
+}
+.text-accent {
+  color: $accent;
 }
 
 // List-style

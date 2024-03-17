@@ -8,12 +8,12 @@ let AdressRouter = Router()
 
 AdressRouter.get('/', index)
 
-AdressRouter.get('/:id', validateParams('id', 'int'), show)
+AdressRouter.get('/:id', show)
 
-AdressRouter.post('/', validateSchema('adress'), create)
+AdressRouter.post('/', validateSchema('address'), create)
 
-AdressRouter.patch('/:id', validateParams('id', 'int'), validateSchema('adress', true), update)
+AdressRouter.patch('/:id', validateSchema('address', true), update)
 
-AdressRouter.delete('/:id', validateParams('id', 'int'), remove)
+AdressRouter.delete('/:id', remove)
 
 export default AdressRouter

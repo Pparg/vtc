@@ -18,7 +18,6 @@
   let updateValue = (event) => {
     emit('update:modelValue', event.target.value)
   };
-  
 
 </script>
 
@@ -37,8 +36,8 @@
   }
 
   .input_text:hover, .input_text:focus {
-  border: 2px solid $accent;
-  background-color: white;
-}
+    border: 2px solid $accent;
+    background-color: white;
+  }
   
 </style>

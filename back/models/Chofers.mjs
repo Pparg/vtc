@@ -24,11 +24,15 @@ let Chofer = sequelize.define('Chofer', {
   description: {
     type: DataTypes.TEXT,
   },
+  password: {
+    type: DataTypes.STRING(100),
+    allowNull: false
+  },
   email: {
     type: DataTypes.STRING(255),
     allowNull: false
   },
-  available: {
+  valid_account: {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
@@ -38,10 +42,20 @@ let Chofer = sequelize.define('Chofer', {
       model: 'roles',
       key: 'id'
     }
+  }, 
+  created_at: {
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   }
 }, {
   tableName: 'chofers',
-  timestamps: false
+  timestamps: true,
+  updatedAt: 'updated_at',
+  createdAt: 'created_at'
 })
 
 export default Chofer

@@ -57,7 +57,6 @@ let maintain_session = (req, res) => {
         }
         if (current_account) {
           let {password, role_id, ...account_info} = current_account.dataValues
-          console.log(user.role)
           return res.successResponse(200, {
             user_data: account_info,
             isAdmin: user.role === 'admin',

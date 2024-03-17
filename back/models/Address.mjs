@@ -19,6 +19,10 @@ let Address = sequelize.define('Address', {
     type: DataTypes.TEXT,
     allowNull: false
   },
+  name: {
+    type: DataTypes.STRING(200),
+    allowNull: true
+  },
   city: {
     type: DataTypes.TEXT,
     defaultValue: 'clermont-ferrand'
@@ -33,12 +37,31 @@ let Address = sequelize.define('Address', {
   },
   comment: {
     type: DataTypes.TEXT
+  },
+  latitude: {
+    type: DataTypes.DOUBLE,
+    allowNull: true
+  },
+  longitude: {
+    type: DataTypes.DOUBLE,
+    allowNull: true
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+  },
+  updated_at: {
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   }
 }, {
-  tableName: 'address'
+  tableName: 'address',
+  timestamps: true,
+  updatedAt: 'updated_at',
+  createdAt: 'created_at'
 })
 
-User.hasMany(Address)
-Address.belongsTo(User)
+User.hasMany(Address, {foreignKey: 'user_id'})
+Address.belongsTo(User, {foreignKey: 'user_id'})
 
 export default Address

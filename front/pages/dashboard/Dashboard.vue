@@ -1,15 +1,23 @@
 <script setup>
 
+  import { ref } from 'vue';
+
   import LeftMenu from './src/layout/LeftMenu.vue';
   import TopMenu from './src/layout/TopMenu.vue';
+  
+  let menu_is_open = ref(true);
+
+  let handleToggleMenu = () => {
+    menu_is_open.value = !menu_is_open.value
+  };
 
 </script>
 
 <template>
   <div class="flex flex-row">
-    <LeftMenu />
+    <LeftMenu class="left_menu" v-show="menu_is_open" />
     <main class="w-full h-screen overflow-y-scroll overflow-x-none">
-      <TopMenu />
+      <TopMenu @handleMenu="handleToggleMenu" />
       <router-view v-slot="{Component}">
         <component :is="Component"></component>
       </router-view>
@@ -18,5 +26,4 @@
 </template>
 
 <style lang="scss" scoped>
-
 </style>

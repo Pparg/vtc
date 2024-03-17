@@ -33,7 +33,7 @@
 </script>
 
 <template>
-  <aside v-if="visible" class="border-1 border-round-xl p-3 absolute panel flex flex-column gap-2 " ref="$overlayPanel" >
+  <aside v-if="visible" class="border-1 border-round-xl p-3 panel flex flex-column gap-2 " ref="$overlayPanel" >
     <slot name="content"/>
   </aside>
 </template>

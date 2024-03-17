@@ -16,7 +16,7 @@
 </script>
 
 <template>
-  <textarea :value="modelValue" @input="updateValue" class="text_area border-round"></textarea>
+  <textarea :value="modelValue" @input="updateValue" class="text_area border-round-sm"></textarea>
 </template>
 
 <style lang="scss">

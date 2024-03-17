@@ -24,7 +24,7 @@
         <slot name="content"/>
       </a>
     </div>
-    <router-link v-else :to="to" class="link">
+    <router-link v-else :to="to" class="link" :props="true">
       <div>
         <span v-if="label">{{ label }}</span>
         <slot name="content"/>

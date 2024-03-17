@@ -16,11 +16,11 @@ let UserSchema = z.object({
     message: 'Vous devez accepter les termes et conditions.'
   }),
   newsletter: z.boolean().optional(),
-  birthday: z.date().optional(),
+  birthday: z.string().datetime().optional().nullable(),
   email: z.string().email({
     message: 'Email invalide.'
   }).max(255),
-  phone_number: z.string().max(20).optional(),
+  phone_number: z.string().max(20).optional().nullable(),
   password: z.string().min(8, {
     message: 'Le mot de passe doit contenir au moins 8 caractères.'
   }).regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\W_]).{8,}$/, {

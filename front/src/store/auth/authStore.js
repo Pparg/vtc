@@ -35,6 +35,12 @@ export let useAuthStore = defineStore('auth', {
       this.user = null
       this.isAdmin = false,
       this.isLogged = false
+    },
+    updateUser(data) {
+      this.user = {
+        ...this.user,
+        ...data
+      }
     }
   }
 })

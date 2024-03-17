@@ -9,7 +9,6 @@ export async function authenticateAccount (email, password) {
     let user = await User.findOne( {where: {email: email}})
     let chofer = await Chofer.findOne({where: {email: email}})
     if (user || chofer) {
-      console.log('here')
       let is_password_valid = await comparePassword(password, user.password)
       if (is_password_valid) {
         let account = user || chofer

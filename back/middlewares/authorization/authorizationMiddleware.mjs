@@ -1,22 +1,13 @@
-import jwt from 'jsonwebtoken'
-
 export default function hasRight(allowed_roles) {
   return async (req, res, next) => {
     try {
-      if (req.headers.authorization) {
-        let token = req.headers.authorization.split(' ')[1]
-        let decoded_token = jwt.verify(token, process.env.SECRET_KEY)
-        let current_user_role = decoded_token.role
-        if (current_user_role && allowed_roles.includes(current_user_role)) {
-          next()
-        } else {
-          res.status(403).json({
-            errors : "Accès refusé. Droits requis non présents."
-          })
-        }
+      let current_user_info = req.user
+      if (current_user_info && allowed_roles.includes(current_user_info.role)) {
+        next()
       } else {
-        res.status(403).send({
-          errors: "Accès refusé. Droit requis."
+        res.status(403).json({
+          errors: "Accès refusé brooo",
+          test: current_user_info
         })
       }
     } catch (error) {
