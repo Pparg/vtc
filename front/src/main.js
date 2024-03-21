@@ -24,6 +24,7 @@ import InputNumber from './components/InputNumber.vue';
 import InputText from './components/InputText.vue';
 import LoadableList from './components/LoadableList.vue';
 import Icon from './components/Icon.vue';
+import Card from './components/Card.vue';
 
 
 const pinia = createPinia();
@@ -34,7 +35,7 @@ app.use(pinia)
 
 app.use(VueGoogleMaps, {
   load: {
-    // API KEY
+    key: 'AIzaSyDZOFx7cPrYyOm5oNTPZwrbBeLOttYcWfo',
     libraries: 'places'
   }
 })
@@ -44,6 +45,8 @@ app.component('Link', Link)
 app.component('InputNumber', InputNumber)
 app.component('InputText', InputText)
 app.component('Icon', Icon)
+app.component('Card', Card)
+
 
 const authStore = useAuthStore()
 const applicationStore = useApplicationStore()

@@ -4,13 +4,17 @@
     bg_color: {
       type: String,
       required: false
+    },
+    border: {
+      type: Boolean,
+      default: true
     }
   });
 
 </script>
 
 <template>
-  <aside class="p-2 border-round-lg card" :class="{'bg-ligh': !props.bg_color, [props.bg_color]: props.bg_color}">
+  <aside class="p-2 border-round-lg" :class="{'bg-ligh': !props.bg_color, [props.bg_color]: props.bg_color, 'card': props.border}">
     <slot name="title" />
     <slot name="content" />
   </aside>

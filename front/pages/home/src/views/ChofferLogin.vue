@@ -4,7 +4,7 @@
 
   import { useAuthStore } from '@/store/auth/authStore';
 
-  import { login } from '@/utils/authentication/index'
+  import { choffeurLogin } from '@/utils/authentication/index'
   import { useRouter } from 'vue-router';
 
   import { ErrorObject } from '@/composables/errors/index'
@@ -27,7 +27,7 @@
 
   let handleSubmit = async () => {
     try {
-      let user_login = await login(user_info.value)
+      let user_login = await choffeurLogin(user_info.value)
       if (user_login.status === 200) {
         localStorage.setItem('63vtc', user_login.data.token)
         auth.setUser(user_login.data.user_data, user_login.data.role)
@@ -44,7 +44,7 @@
 <template>
   <section class="flex flex-column align-items-center justify-content-center w-12">
     <article class="w-9 container flex border-round">
-      <article class="login w-8 flex flex-column m-5 align-items-center">
+      <article class="login w-12 flex flex-column m-5 align-items-center">
         <h2 class="text-xl text-center m-0 mb-3">Connectez vous à votre compte</h2>
         <fieldset class="flex flex-column border-none w-10 gap-2">
           <label class="text-sm">Adresse email</label>
@@ -56,20 +56,7 @@
         </fieldset>
         <aside class="mt-4 flex flex-column gap-3">
           <Button :label="'Connexion'" @click="handleSubmit"></Button>
-          <div class="flex flex-column align-items-center gap-2">
-            <span class="text-xs">Mot de passe oublié ?</span>
-            <Link :to="{name: 'choffer_login'}">
-              <template #content>
-                <span class="text-xs">Vous êtes un chauffeur? C'est par ici</span>
-              </template>
-            </Link>
-          </div>
         </aside>
-      </article>
-      <article class="sign_in border-round-lg border-noround-left align-items-center justify-content-between flex flex-column w-4 sign_in p-5">
-        <h2 class="text-xl m-0 text-center">Nouveaux chez nous ?</h2>
-        <p class="text-sm text-center">Creer un compte et simplifiez vos déplacement</p>
-        <Button :to="{name: 'home_sign_in'}" :label="'Inscription'" type="accent"></Button>
       </article>
     </article>
   </section>

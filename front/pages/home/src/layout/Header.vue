@@ -12,7 +12,7 @@
 <template>
   <header class="header">
     <nav>
-      <Link :to="{name: 'home'}">
+      <Link :to="{name: 'home_main'}">
         <template #content>
           <h1>63VTC</h1>          
         </template>

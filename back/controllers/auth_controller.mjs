@@ -8,7 +8,7 @@ import { generateToken } from "../utils/jwt/jwtToken.mjs"
 
 // [POST] api/auth/login
 let login = async (req, res) => {
-  let authUser = await authenticateAccount(req.data.email, req.data.password)
+  let authUser = await authenticateAccount(req.data.email, req.data.password, req.query.type)
   if (authUser.success) {
     let current_user = await User.findByPk(authUser.id)
     let { password, role_id, ...user_info} = current_user.dataValues

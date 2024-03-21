@@ -5,9 +5,16 @@
 <template>
   <footer>
     <ul>
-      <li>Mentions légales</li>
-      <li>Plan du site</li>
-      <li>Mon compte</li>
+      <Link :to="{name: 'vtc_legals'}">
+        <template #content>
+          <span>Mentions légales</span>
+        </template>
+      </Link>
+      <Link :to="{name: 'dashboard'}">
+        <template #content>
+          <span>Mon compte</span>
+        </template>
+      </Link>
     </ul>
   </footer>
 </template>

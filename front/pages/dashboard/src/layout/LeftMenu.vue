@@ -11,7 +11,7 @@
 
 <template>
   <header class="w-3 h-screen left_menu flex flex-column">
-    <Link :to="{name: 'home'}">
+    <Link :to="{name: 'home_main'}">
       <template #content>
         <h2 class="m-0 text-center pt-2">63 VTC</h2>
       </template>
