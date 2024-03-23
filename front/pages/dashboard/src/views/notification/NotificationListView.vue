@@ -2,12 +2,10 @@
   
   import { ref, onMounted } from 'vue';
 
-  import Button from '@/components/Button.vue';
-  import Icon from '@/components/Icon.vue';
-  import Link from '@/components/Link.vue';
+  import { getNotificationStyle } from '@/utils/notifications.js'
+
   import LoadableList from '@/components/LoadableList.vue';
   import Card from '@/components/Card.vue';
-
 
   let handleDelete = () => {
 
@@ -20,8 +18,8 @@
     <header>
       <div class="flex align-items-center justify-content-between">
         <h2 class="text-xl">Centre de notifications</h2>
-        <Button :label="'Ajouter une notification'" :type="'navigation'" :to="{name: 'new_notification'}" v-if="true"/>
-      </div>  
+        <Button :label="'Ajouter une notification'" :type="'navigation'" :to="{name: 'new_notification'}" v-if="true" />
+      </div>
       <p class="text-xs">Cette interface sert à administrer les notifications de l'application.</p>
     </header>
     <article class="mt-5">
@@ -30,23 +28,28 @@
           <Card>
             <template #title>
               <div class="flex justify-content-between align-items-center">
-                <h5 class="m-0">{{ slotProps.data.name}}</h5>
+                <div class="flex align-items-center gap-3">
+                  <h5 class="m-0">{{ slotProps.data.title}}</h5>
+                  <span v-if="slotProps.data.type" class="p-1 border-circle flex" :style="{backgroundColor: getNotificationStyle[slotProps.data.type].bg_color}">
+                    <Icon :name="getNotificationStyle[slotProps.data.type].icon" />
+                  </span>
+                </div>
                 <aside class="flex flex-row gap-3">
-                  <Link :to="{name: 'edit_notification', params: {notification_id: slotProps.data.id}}">
-                    <template #content>
-                      <Icon name="pencil" :size="14" :color="'#459ECC'"/>
-                    </template>
+                  <Link :to="{name: 'edit_notification', params: {id: slotProps.data.id}}">
+                  <template #content>
+                    <Icon name="pencil" :size="14" :color="'#459ECC'" />
+                  </template>
                   </Link>
-                  <Link :to="{name: 'delete_notification', params: {notification_id: slotProps.data.id}}">
-                    <template #content>
-                      <Icon name="trash" :size="14" :color="'#FF5757'"/>
-                    </template>
+                  <Link :to="{name: 'delete_notification', params: {id: slotProps.data.id}}">
+                  <template #content>
+                    <Icon name="trash" :size="14" :color="'#FF5757'" />
+                  </template>
                   </Link>
                 </aside>
               </div>
             </template>
             <template #content>
-              <p class="m-0 mt-2 text-sm">{{ slotProps.data.description }}</p>
+              <p class="m-0 mt-2 text-sm">{{ slotProps.data.content }}</p>
             </template>
           </Card>
         </template>
@@ -54,8 +57,8 @@
           <aside class="flex flex-column align-items-center gap-2">
             <h4 class="m-0">Vous n'avez pas encore de notifications définie.</h4>
             <p class="m-0 text-sm">Partagez des informations à vos utilisateurs.</p>
-            <Button :label="'Ajouter une notification'" :type="'navigation'" :to="{name: 'new_notification'}"/>
-        </aside>
+            <Button :label="'Ajouter une notification'" :type="'navigation'" :to="{name: 'new_notification'}" />
+          </aside>
         </template>
       </LoadableList>
     </article>

@@ -29,7 +29,6 @@ let validateSchema = (name, is_partial = false) => {
           message: 'Schéma non trouvé.'
         })
       }
-      
       let validated_data = is_partial ? schema.partial().safeParse(req.body) : schema.safeParse(req.body)
       if (validated_data.success) {
         req.data = validated_data.data

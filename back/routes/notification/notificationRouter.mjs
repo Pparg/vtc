@@ -7,6 +7,14 @@ import { get, show, create, remove, edit} from '../../controllers/notifications/
 
 let NotificationRouter = Router()
 
+let logNotif = (req, res, next) => {
+  console.log(req.path)
+  console.log('------')
+  next()
+}
+
+NotificationRouter.use(logNotif)
+
 NotificationRouter.get('/', get)
 
 NotificationRouter.get('/:notif_id', hasRight(['admin']), show)

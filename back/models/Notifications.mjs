@@ -19,12 +19,22 @@ let Notification = sequelize.define('Notification', {
     type: DataTypes.DATE,
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   },
+  updated_at: {
+    type: DataTypes.DATE,
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+  },
+  publication_date: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
   type: {
     type: DataTypes.STRING(60),
   }
 }, {
   tableName: 'notifications',
-  timestamps: false
+  timestamps: true,
+  updatedAt: 'updated_at',
+  createdAt: 'created_at'
 })
 
 export default Notification

@@ -2,9 +2,16 @@ import z from 'zod'
 
 
 let notificationSchema = z.object({
-  title: z.string(),
-  content: z.string(),
-  type: z.string()
+  title: z.string().min(1, {
+    message: "Veuillez remplir ce champs."
+  }),
+  content: z.string().min(1, {
+    message: "Veuillez remplir ce champs."
+  }),
+  type: z.string().optional(),
+  publication_date: z.string().datetime({
+    message: 'Veuillez remplir ce champs.'
+  })
 })
 
 export default notificationSchema

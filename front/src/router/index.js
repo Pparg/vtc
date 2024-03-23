@@ -139,20 +139,20 @@ const router = createRouter({
         name: 'new_notification',
         component: () => import ('../../pages/dashboard/src/views/notification/AddNotificationView.vue')
       }, {
-        path: ':notification_id',
+        path: ':id',
         name: 'edit_notification',
         props: (route) => {
           return {
-            notification_id: parseInt(route.params.notification_id)
+            id: parseInt(route.params.id)
           }
         },
         component: () => import ('../../pages/dashboard/src/views/notification/EditNotificationView.vue')
       }, {
-        path: 'remove/:notification_id',
+        path: 'remove/:id',
         name: 'delete_notification',
         props: (route) => {
           return {
-            notification_id: parseInt(route.params.notification_id)
+            id: parseInt(route.params.id)
           }
         },
         component: () => import ('../../pages/dashboard/src/views/notification/DeleteNotificationView.vue')

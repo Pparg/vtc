@@ -9,13 +9,20 @@ import ApiRouter from './routes/ApiRouter.mjs'
 
 dotenv.config()
 
+let logRoute = (req, res, next) => {
+  console.log(`Route: ${req.path}`)
+  console.log('Params:', req.params)
+  console.log('Data:', req.body)
+  next()
+}
+
 let app = express()
 app.disable('x-powered-by')
 
 let PORT = process.env.PORT 
 
 app.use(json())
-
+app.use(logRoute)
 app.use(corsMiddleware())
 
 app.use(successResponseMiddleWare)
