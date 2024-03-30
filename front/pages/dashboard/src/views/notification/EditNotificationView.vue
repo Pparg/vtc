@@ -60,11 +60,10 @@ let max_publication_date = (new Date(new Date().getTime() + (3 * 7 * 24 * 60 * 6
       </template>
       </Link>
       <div class="flex align-items-center justify-content-between">
-        <h2 class="text-xl">Ajouter une nouvelle notification</h2>
+        <h2 class="text-xl">Modifier une notification</h2>
       </div>
     </header>
     <article class="flex flex-column gap-3">
-      {{ edited_notification }}
       <div class="flex flex-column gap-2">
         <label>Titre</label>
         <InputText v-model="edited_notification.title" class="w-10" />

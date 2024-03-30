@@ -1,11 +1,20 @@
 <script setup>
 
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
 
   import UsersList from './UsersListView.vue'
   import ChoffersList from './ChoffersListView.vue'
+  import { useRouter } from 'vue-router';
 
   let current_tab = ref('users');
+
+  let router = useRouter()
+
+  onMounted(() => {
+    if (router.currentRoute.value.query.chofers) {
+      current_tab.value = 'choffers'
+    }
+  });
 
 </script>
 

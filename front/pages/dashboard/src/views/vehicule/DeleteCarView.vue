@@ -30,8 +30,8 @@
 
 <template>
   <aside class="flex flex-column gap-3 align-items-center mx-3 mt-5">
-    <h3 class="m-0">Suppression d'une addresse sauvegarder</h3>
-    <p class="m-0 text-sm">Etes vous sûr de vouloir effacer cette addresse?</p>
+    <h3 class="m-0">Suppression d'un véhicule</h3>
+    <p class="m-0 text-sm">Etes vous sûr de vouloir effacer ce véhicule?</p>
     <div class="flex w-12 justify-content-between">
       <Button :label="'Annuler'" type='navigation' :to="{name: 'list_of_cars'}" />
       <Button :label="'Supprimer'" type='danger' @click="handleDelete"/>

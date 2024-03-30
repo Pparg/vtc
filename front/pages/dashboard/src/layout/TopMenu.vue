@@ -52,8 +52,8 @@
       <Icon :name="'bell'" :size="16" @click="handleNotificationMenu"></Icon>
       <OverlayPanel ref="$overlay_panel_notification" class="mt-5 w-4">
         <template #content>
-          <aside class="max-h-10rem">
-            <div v-for="notification in notifications.data">
+          <aside class="max-h-10rem overflow-scroll flex flex-column gap-3">
+            <div v-for="notification in notifications.data" class="notification_container">
               <div class="flex align-items-center gap-2">
                 <h5 class="m-0">{{ notification.title }}</h5>
                 <span v-if="notification.type" class="p-1 border-circle flex" :style="{ backgroundColor: getNotificationStyle[notification.type].bg_color }">
@@ -100,6 +100,11 @@
   }
   .hover_option:hover {
     font-weight: 700;
+  }
+
+  .notification_container {
+    border-bottom: 1px solid ;
+    padding-bottom: 5px;
   }
 
 </style>

@@ -4,7 +4,7 @@
 
   let props = defineProps({
     modelValue: {
-      type: Number,
+      type: [Number, null],
       required: true
     },
     placeholder: {

@@ -1,4 +1,6 @@
 import Chofer from "../../models/Chofers.mjs"
+import Role from "../../models/Roles.mjs";
+import { hashPassword } from "../../utils/security/password.mjs";
 
 
 let get = async (req, res) => {
@@ -30,7 +32,30 @@ let show = async (req, res) => {
 }
 
 let create = async (req, res) => {
-
+  try {
+    let hashedPassword = await hashPassword(req.data.password)
+    let choffer_email = req.data.email
+    let chofer_exists = await Chofer.findOne({where: {email: choffer_email}})
+    if (chofer_exists) {
+      res.errorResponse(400, {
+        message: 'Ce compte existe déjà.'
+      })
+    } else {
+      let role = await Role.findOne({where: {name: 'chofer'}})
+      let new_choffer = await Chofer.create({
+        ...req.data,
+        password: hashedPassword,
+        role_id: role.id,
+        valid_account: false
+      })
+      let {password, role_id, ...chofer_info } = new_choffer.dataValues
+      res.successResponse(200, {
+        data: chofer_info
+      })
+    }
+  } catch (error) {
+    res.errorResponse(500, error.message)
+  }
 }
 
 let edit = async (req, res) => {

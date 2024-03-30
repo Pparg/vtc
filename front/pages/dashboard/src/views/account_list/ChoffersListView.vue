@@ -12,20 +12,20 @@
 
 <template>
   <section class="px-3 ">
-    <header class="flex flex-column mb-4">
-
+    <header class="flex flex-column align-items-center mb-3">
+      <Button :label="'Créer un compte chauffeur.'" :type="'navigation'" :to="{ name: 'users_new_choffer' }" />
     </header>
     <LoadableList api="/choffers">
       <template #content="slotProps">
-        <Card class="mb-2" bg_color="bg-accent">
+        <Card class="mb-2">
           <template #title>
             <header class="flex flex-row align-items-center justify-content-between mb-2">
-              <h5 class="m-0 text-reverse-color" >{{ slotProps.data.first_name }} {{ slotProps.data.last_name }}</h5>
+              <h5 class="m-0">{{ slotProps.data.first_name }} {{ slotProps.data.last_name }}</h5>
               <div>
                 <Link :to="{name: 'user_details', params: {user_id: slotProps.data.id}}">
-                  <template #content>
-                    <Icon name="plus" />
-                  </template>
+                <template #content>
+                  <Icon name="plus" />
+                </template>
                 </Link>
               </div>
             </header>
@@ -33,13 +33,13 @@
           <template #content>
             <aside>
               <div class="flex gap-2">
-                <span class="m-0 text-reverse-color text-sm font-semibold">Client depuis: </span>
-                <p class="m-0 text-sm text-reverse-color">{{ formatDate(slotProps.data.created_at)}}</p>
+                <span class="m-0 text-sm font-semibold">Client depuis: </span>
+                <p class="m-0 text-sm">{{ formatDate(slotProps.data.created_at)}}</p>
               </div>
               <div class="flex gap-2">
-                <span class="m-0 text-reverse-color text-sm font-semibold">Dernieres connexion: </span>
-                <p class="m-0 text-sm text-reverse-color" v-if="slotProps.data.last_login">{{ formatDate(slotProps.data.last_login)}}</p>
-                <p class="m-0 text-sm text-reverse-color" v-else>Pas encore connecté</p>
+                <span class="m-0 text-sm font-semibold">Dernieres connexion: </span>
+                <p class="m-0 text-sm" v-if="slotProps.data.last_login">{{ formatDate(slotProps.data.last_login)}}</p>
+                <p class="m-0 text-sm" v-else>Pas encore connecté</p>
               </div>
             </aside>
           </template>
@@ -48,6 +48,7 @@
       <template #no_results>
         <aside class="flex flex-column align-items-center gap-2">
           <h4 class="m-0">Vous n'avez pas encore de chauffers.</h4>
+          <Button :label="'Créer un compte chauffeur.'" :type="'navigation'" :to="{ name: 'users_new_choffer' }" />
         </aside>
       </template>
     </LoadableList>

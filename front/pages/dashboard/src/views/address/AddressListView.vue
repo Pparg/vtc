@@ -8,13 +8,15 @@
   import Link from '@/components/Link.vue';
   import Icon from '@/components/Icon.vue';
 
+  // TODO @orthographe
+
 </script>
 
 <template>
   <section class="px-3">
     <header>
       <div class="flex align-items-center justify-content-between">
-        <h2 class="text-xl">Mes addresses</h2>
+        <h2 class="text-xl">Mes adresses</h2>
         <Button :label="'Ajouter une nouvelle addresse'" :type="'navigation'" :to="{name: 'new_address'}" v-if="true"/>
       </div>
       <p class="text-xs">Cette interface sert à enregistrer vos addresses favorites.</p>

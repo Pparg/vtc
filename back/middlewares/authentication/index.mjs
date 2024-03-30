@@ -9,7 +9,7 @@ let authenticateToken = async (req, res, next) => {
   let cookies = req.headers.cookie
   let cookie_token = cookies ? cookies.split(';').find(cookie => cookie.startsWith('vtc')) : null
   if (!cookie_token) {
-    return res.status(404).json({
+    return res.status(403).json({
       message: 'Accès non autorisé.'
     })
   }

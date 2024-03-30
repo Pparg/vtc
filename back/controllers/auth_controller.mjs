@@ -8,14 +8,13 @@ import { generateToken } from "../utils/jwt/jwtToken.mjs"
 
 // [POST] api/auth/login
 let login = async (req, res) => {
-  let authUser = await authenticateAccount(req.data.email, req.data.password, req.query.type)
+  console.log(req.query)
+  let authUser = await authenticateAccount(req.data.email, req.data.password, req.query)
   if (authUser.success) {
-    let current_user = await User.findByPk(authUser.id)
-    let { password, role_id, ...user_info} = current_user.dataValues
-    let user_role = await Role.findOne({where: {name: authUser.role}})
+    console.log(authUser)
     let token = generateToken({
       id: authUser.id,
-      role: user_role.name
+      role: authUser.name
     })
     res.cookie('vtc', token, {
       httpOnly: true,
@@ -23,9 +22,9 @@ let login = async (req, res) => {
     })
     res.successResponse(200, {
       token: token,
-      user_data:user_info,
-      role: user_role.name,
-      isAdmin: user_role.name === 'admin'
+      user_data: authUser.data,
+      role: authUser.role,
+      isAdmin: authUser.role === 'admin'
     })
   } else {
     res.errorResponse(400, authUser)
@@ -56,9 +55,13 @@ let maintain_session = (req, res) => {
           current_account = await User.findByPk(account_id)
         }
         if (current_account) {
-          let {password, role_id, ...account_info} = current_account.dataValues
+          let {password, role_id, ...user_info} = current_account.dataValues
+          res.cookie('vtc', token, {
+            httpOnly: true,
+            sameSite: 'strict',
+          })
           return res.successResponse(200, {
-            user_data: account_info,
+            user_data: user_info,
             isAdmin: user.role === 'admin',
             role: user.role
           })

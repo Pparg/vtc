@@ -6,7 +6,7 @@ export default function hasRight(allowed_roles) {
         next()
       } else {
         res.status(403).json({
-          errors: "Accès refusé brooo",
+          errors: "Accès refusé",
           test: current_user_info
         })
       }

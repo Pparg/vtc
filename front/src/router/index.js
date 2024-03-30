@@ -88,6 +88,10 @@ const router = createRouter({
             user_id: route.params.user_id
           }
         }
+      }, {
+        path: 'new_choffer',
+        name: 'users_new_choffer',
+        component: () => import ('../../pages/dashboard/src/views/choffer/AddChofferView.vue')
       }]
     }, {
       path: 'cars',

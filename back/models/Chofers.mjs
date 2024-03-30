@@ -1,7 +1,6 @@
+import Availability from "./Availability.mjs";
 import { Sequelize, DataTypes } from "sequelize";
 import sequelize from "../config/database.mjs";
-import Role from "./Roles.mjs";
-
 
 let Chofer = sequelize.define('Chofer', {
   id: {
@@ -56,6 +55,13 @@ let Chofer = sequelize.define('Chofer', {
   timestamps: true,
   updatedAt: 'updated_at',
   createdAt: 'created_at'
+})
+
+Chofer.hasMany(Availability, {
+  foreignKey: 'chofer_id'
+});
+Availability.belongsTo(Chofer, {
+  foreignKey: 'chofer_id'
 })
 
 export default Chofer

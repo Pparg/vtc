@@ -32,3 +32,7 @@ export async function updatePassword(data) {
 export async function remove(user_id) {
   return await api.delete(`/users`)
 }
+
+export async function createChofferAccount(data) {
+  return await api.post('/choffers', data)
+}
