@@ -7,13 +7,11 @@ export default function hasRight(allowed_roles) {
       } else {
         res.status(403).json({
           errors: "Accès refusé",
-          test: current_user_info
         })
       }
     } catch (error) {
       res.status(500).json({
         message: 'Erreur de validation des droits.',
-        errors: error.message
       })
     }
   }

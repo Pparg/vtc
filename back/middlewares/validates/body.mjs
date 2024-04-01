@@ -6,7 +6,7 @@ import rideSchema from '../../schema/rideSchema.mjs'
 import userSchema from '../../schema/userSchema.mjs'
 import roleSchema from '../../schema/roleSchema.mjs'
 import loginSchema from '../../schema/loginSchema.mjs'
-import availabilitySchema from '../../schema/availabilitySchema.mjs'
+import {dayConfigSchema, weekConfigSchema} from '../../schema/availabilitySchema.mjs'
 
 let schemas = {
   user: userSchema,
@@ -17,13 +17,21 @@ let schemas = {
   chofer: choferSchema,
   role: roleSchema,
   login: loginSchema,
-  availability: availabilitySchema
+  single: dayConfigSchema,
+  week: weekConfigSchema
 };
 
 let validateSchema = (name, is_partial = false) => {
   return (req, res, next) => {
     try {
-      let schema = schemas[name.toLowerCase()]
+      let schema
+      if (name === 'availability') {
+
+        console.log(req.query.type)
+        schema = schemas[req.query.type]
+      } else {
+        schema = schemas[name.toLowerCase()]
+      }
       if (!schema) {
         return res.status(500).json({
           message: 'Schéma non trouvé.'

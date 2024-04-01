@@ -13,7 +13,7 @@
   import { update as updateAccountInfo, formatData } from '@/utils/account';
   import { ErrorObject } from '@/composables/errors/index'
 
-  let { setErrors, fieldHasErrors, getFieldErrorMessage, getErrors } = ErrorObject();
+  let { setErrors, fieldHasErrors, getFieldErrorMessage } = ErrorObject();
 
   let authStore = useAuthStore();
 
@@ -72,7 +72,7 @@
           <Calendar v-model="account_general.birthday"></Calendar>
         </div>
       </div>
-      <div class="flex flex-column w-8 gap-2" v-if="current_user.role === 'choffer'">
+      <div class="flex flex-column w-8 gap-2" v-if="current_user.role === 'chofer'">
         <span class="text-sm">Description</span>
         <TextArea v-model="account_general.description" :col="1"></TextArea>
       </div>

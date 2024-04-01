@@ -7,6 +7,17 @@ import HomeRoutes from './home/homeRouter'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [{
+    path: '/:catchAll(.*)',
+    name: 'not_found',
+    redirect: () => {
+      let user = useAuthStore()
+      if (user.isLogged) {
+        return {name: 'home_page'}
+      } else {
+        return {name: 'home'}
+      }
+    }
+  }, {
     path: '/',
     name: 'home',
     component: () => import('../../pages/home/App.vue'),
@@ -92,6 +103,22 @@ const router = createRouter({
         path: 'new_choffer',
         name: 'users_new_choffer',
         component: () => import ('../../pages/dashboard/src/views/choffer/AddChofferView.vue')
+      }]
+    }, {
+      path: 'availability',
+      name: 'chofer_availabilities',
+      meta: {
+        chofer_only: true,
+      },
+      component: () => import ('../../pages/dashboard/src/views/availability/AvailabilityView.vue'),
+      children: [{
+        path: '',
+        name: 'availability_overwiew',
+        component: () => import ('../../pages/dashboard/src/views/availability/AvailabilityOverView.vue')
+      }, {
+        path: 'add',
+        name: 'add_availability',
+        component: () => import ('../../pages/dashboard/src/views/availability/AddAvailabilityView.vue')
       }]
     }, {
       path: 'cars',

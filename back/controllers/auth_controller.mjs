@@ -8,26 +8,28 @@ import { generateToken } from "../utils/jwt/jwtToken.mjs"
 
 // [POST] api/auth/login
 let login = async (req, res) => {
-  console.log(req.query)
-  let authUser = await authenticateAccount(req.data.email, req.data.password, req.query)
-  if (authUser.success) {
-    console.log(authUser)
-    let token = generateToken({
-      id: authUser.id,
-      role: authUser.name
-    })
-    res.cookie('vtc', token, {
-      httpOnly: true,
-      sameSite: 'strict',
-    })
-    res.successResponse(200, {
-      token: token,
-      user_data: authUser.data,
-      role: authUser.role,
-      isAdmin: authUser.role === 'admin'
-    })
-  } else {
-    res.errorResponse(400, authUser)
+  try {
+    let authUser = await authenticateAccount(req.data.email, req.data.password, req.query)
+    if (authUser.success) {
+      let token = generateToken({
+        id: authUser.id,
+        role: authUser.role
+      })
+      res.cookie('vtc', token, {
+        httpOnly: true,
+        sameSite: 'strict',
+      })
+      res.successResponse(200, {
+        token: token,
+        user_data: authUser.data,
+        role: authUser.role,
+        isAdmin: authUser.role === 'admin'
+      })
+    } else {
+      res.errorResponse(400, authUser)
+    }
+  } catch (error) {
+    res.errorResponse(500, error.message)
   }
 }
 
@@ -36,7 +38,7 @@ let logout = (req, res) => {
   res.clearCookie('vtc')
   res.successResponse(201)
 }
-// [GET] api/auth/initialize
+// [GET] api/auth/session
 let maintain_session = (req, res) => {
   try {
     const token = req.headers.authorization?.split(' ')[1]

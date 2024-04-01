@@ -75,7 +75,6 @@
         <TextArea v-model="new_notification.content" class="w-10" />
         <span v-if="fieldHasErrors('content')" class="text-xxs p_errors">{{ getFieldErrorMessage('content') }}</span>
       </div>
-      <!-- <Dropdown /> -->
       <div class="flex flex-column gap-2">
         <label>Type de notification</label>
         <Dropdown v-model="new_notification.type" :options="dropdown_options" :placeholder="'Selectionnez un type de notification'" class="w-10" />
