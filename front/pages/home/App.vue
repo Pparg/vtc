@@ -7,7 +7,7 @@
 <template>
   <div class="home flex flex-column justify-content-between">
     <Header></Header>
-    <main class="content flex">
+    <main class="content flex overflow-y-hidden">
       <router-view v-slot="{Component}">
         <component :is="Component"></component>
       </router-view>

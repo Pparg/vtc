@@ -43,16 +43,17 @@
 
 <template>
   <section class="flex flex-column align-items-center justify-content-center w-12">
-    <article class="w-9 container flex border-round">
-      <article class="login w-8 flex flex-column m-5 align-items-center">
+    <article class="container flex flex-column gap-4 w-10 p-3 border-round align-items-center">
+      <article class="w-12 flex flex-column align-items-center px-5">
         <h2 class="text-xl text-center m-0 mb-3">Connectez vous à votre compte</h2>
-        <fieldset class="flex flex-column border-none w-10 gap-2">
+        <fieldset class="flex flex-column border-none w-10  gap-2">
           <label class="text-sm">Adresse email</label>
           <InputTextVue v-model="user_info.email" :placeholder="'nom@mail.com'" />
           <span v-if="fieldHasErrors('email')" class="text-xxs p_errors">{{ getFieldErrorMessage('email') }}</span>
           <label class="text-sm">Mot de passe</label>
           <InputPassword v-model="user_info.password" />
-          <span v-if="fieldHasErrors('password')" class="text-xxs p_errors">{{ getFieldErrorMessage('password') }}</span>
+          <span v-if="fieldHasErrors('password')" class="text-xxs  p_errors">{{ getFieldErrorMessage('password') }}</span>
+          <span v-if="fieldHasErrors('invalid')" class="text-xxs p_errors">{{ getFieldErrorMessage('invalid') }}</span>
         </fieldset>
         <aside class="mt-4 flex flex-column gap-3">
           <Button :label="'Connexion'" @click="handleSubmit"></Button>
@@ -66,7 +67,7 @@
           </div>
         </aside>
       </article>
-      <article class="sign_in border-round-lg border-noround-left align-items-center justify-content-between flex flex-column w-4 sign_in p-5">
+      <article class="border-round-lg align-items-center justify-content-between flex flex-column w-12 sign_in my-2 p-2">
         <h2 class="text-xl m-0 text-center">Nouveaux chez nous ?</h2>
         <p class="text-sm text-center">Creer un compte et simplifiez vos déplacement</p>
         <Button :to="{name: 'home_sign_in'}" :label="'Inscription'" type="accent"></Button>
@@ -78,13 +79,24 @@
 <style scoped lang="scss">
 
   @import '../../../../src/assets/styles/global.scss';
+  @import '../../../../src/assets/styles/responsive.scss';
 
   .container{
     background-color: $background-light;
+    .sign_in {
+      background-color: $accent;
+    }
+    @include medium-screen {
+      flex-direction: row;
+      padding: 8px 0;
+      max-width: 900px;
+      .sign_in {
+        height: 100%;
+        max-width: 200px;
+      }
+    }
   }
 
-  .sign_in {
-    background-color: $accent;
-  }
+
 
 </style>

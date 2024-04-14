@@ -53,6 +53,7 @@
           <label class="text-sm">Mot de passe</label>
           <InputPassword v-model="user_info.password" />
           <span v-if="fieldHasErrors('password')" class="text-xxs p_errors">{{ getFieldErrorMessage('password') }}</span>
+          <span v-if="fieldHasErrors('invalid')" class="text-xxs p_errors">{{ getFieldErrorMessage('invalid') }}</span>
         </fieldset>
         <aside class="mt-4 flex flex-column gap-3">
           <Button :label="'Connexion'" @click="handleSubmit"></Button>

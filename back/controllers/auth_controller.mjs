@@ -26,7 +26,6 @@ let login = async (req, res) => {
         isAdmin: authUser.role === 'admin'
       })
     } else {
-      console.log(authUser.message, '*****')
       res.errorResponse(400, [{
         path: ['invalid'],
         message: authUser.message
@@ -72,7 +71,7 @@ let maintain_session = (req, res) => {
             role: user.role
           })
         } else {
-          return res.errorResponse(404, 'Invalid')
+          return res.errorResponse(404)
         }
       }
     })

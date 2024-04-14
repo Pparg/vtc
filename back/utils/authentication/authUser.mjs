@@ -38,7 +38,7 @@ export async function authenticateAccount (email, password, type) {
         }
       } else {
         return {
-          success: false, 
+          success: false,
           message: 'Identifiants invalides.'
         }
       }

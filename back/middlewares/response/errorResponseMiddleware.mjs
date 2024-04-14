@@ -2,7 +2,7 @@
 let errorResponseMiddleware = (req, res, next) => {
   res.errorResponse = (code, errors) => {
     let temps_errors = {}
-    if (code > 500) {
+    if (code >= 500) {
       temps_errors = {
         base: 'API error'
       }
