@@ -11,11 +11,15 @@
     menu_is_open.value = !menu_is_open.value
   };
 
+  let closePanel = () => {
+    menu_is_open.value = false
+  };
+
 </script>
 
 <template>
   <div class="flex flex-row">
-    <LeftMenu class="left_menu" v-show="menu_is_open" />
+    <LeftMenu class="left_menu" v-show="menu_is_open" @closePanel="closePanel" />
     <main class="w-full h-screen overflow-y-scroll overflow-x-none">
       <TopMenu @handleMenu="handleToggleMenu" />
       <router-view v-slot="{Component}">
@@ -26,4 +30,5 @@
 </template>
 
 <style lang="scss" scoped>
+
 </style>

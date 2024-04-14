@@ -116,6 +116,24 @@ let show = async (req, res) => {
   }
 }
 
+let admin_show = async (req, res) => {
+  try {
+    console.log(req.params)
+    let user = await User.findByPk(req.params.id, {
+      attributes: ['birthday', 'created_at', 'first_name', 'last_name', 'email', 'last_login', 'phone_number']
+    })
+    if (user) {
+      res.successResponse(200, user.dataValues)
+    } else {
+      res.errorResponse(400, {
+        message: "Cette utilisateur n'existe pas."
+      })
+    }
+  } catch (error) {
+    res.errorResponse(500, error.message)
+  }
+}
+
 // [PATCH] /api/users
 let edit = async (req, res) => {
   try {
@@ -144,7 +162,7 @@ let edit_password = async (req, res) => {
   try {
     let account_id = req.user.id
     let account_type = req.user.role
-    let current_user = account_type === 'choffer' ? await Chofer.findByPk(account_id) : await User.findByPk(account_id)
+    let current_user = account_type === 'chofer' ? await Chofer.findByPk(account_id) : await User.findByPk(account_id)
     let password_is_valid = await comparePassword(req.body.current_password, current_user.password)
     if (password_is_valid) {
       let hashedPassword = await hashPassword(req.data.password)
@@ -161,4 +179,4 @@ let edit_password = async (req, res) => {
   }
 }
 
-export { create, remove, get, show, edit, edit_password }
+export { create, remove, get, show, edit, edit_password, admin_show }

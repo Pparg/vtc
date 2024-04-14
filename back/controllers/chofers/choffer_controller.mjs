@@ -62,12 +62,9 @@ let edit = async (req, res) => {
 
 }
 
-let edit_password = async (req, res) => {
-
-}
 
 let remove = async (req, res) => {
 
 }
 
-export { get, create, edit, edit_password, remove, show }
+export { get, create, edit, remove, show }

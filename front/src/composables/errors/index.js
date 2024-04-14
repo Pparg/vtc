@@ -4,21 +4,7 @@ export function ErrorObject(){
   let errors = ref({})
   
   function setErrors(response) {
-    let tempErrors = {}
-
-    response.forEach(error => {
-      let field = error.path[0]
-      if (!tempErrors[field]) {
-        tempErrors[field] = {
-          message: error.message
-        }
-      } else {
-        tempErrors[field].message += ' ' + error.message
-      }
-    })
-    errors.value = {
-      ...tempErrors
-    }
+    errors.value = response
   }
   
   function fieldHasErrors(field_name) {
@@ -26,7 +12,7 @@ export function ErrorObject(){
   }
 
   function getFieldErrorMessage(field_name) {
-    return errors.value[field_name].message
+    return errors.value[field_name]
   }
 
   function getErrors() {

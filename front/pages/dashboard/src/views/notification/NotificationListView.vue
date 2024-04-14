@@ -7,10 +7,6 @@
   import LoadableList from '@/components/LoadableList.vue';
   import Card from '@/components/Card.vue';
 
-  let handleDelete = () => {
-
-  };
-
 </script>
 
 <template>

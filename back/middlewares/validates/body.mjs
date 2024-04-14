@@ -6,7 +6,7 @@ import rideSchema from '../../schema/rideSchema.mjs'
 import userSchema from '../../schema/userSchema.mjs'
 import roleSchema from '../../schema/roleSchema.mjs'
 import loginSchema from '../../schema/loginSchema.mjs'
-import {dayConfigSchema, weekConfigSchema} from '../../schema/availabilitySchema.mjs'
+import {dayConfigSchema, weekConfigSchema, timeRangeSchema} from '../../schema/availabilitySchema.mjs'
 
 let schemas = {
   user: userSchema,
@@ -18,7 +18,8 @@ let schemas = {
   role: roleSchema,
   login: loginSchema,
   single: dayConfigSchema,
-  week: weekConfigSchema
+  week: weekConfigSchema,
+  time_range: timeRangeSchema,
 };
 
 let validateSchema = (name, is_partial = false) => {
@@ -26,14 +27,12 @@ let validateSchema = (name, is_partial = false) => {
     try {
       let schema
       if (name === 'availability') {
-
-        console.log(req.query.type)
         schema = schemas[req.query.type]
       } else {
         schema = schemas[name.toLowerCase()]
       }
       if (!schema) {
-        return res.status(500).json({
+        res.errorResponse(500, {
           message: 'Schéma non trouvé.'
         })
       }
@@ -42,15 +41,11 @@ let validateSchema = (name, is_partial = false) => {
         req.data = validated_data.data
         next()
       } else {
-        res.status(400).json({
-          message: 'Données invalides.',
-          errors: validated_data.error.errors
-        })
+        res.errorResponse(400, validated_data.error.errors)
       }
     } catch (error) {
-      res.status(500).json({
-        message: 'Erreur de validation des données',
-        error: error.message
+      res.errorResponse(500, {
+        message: 'Erreur de validation des données'
       })
     }
   }

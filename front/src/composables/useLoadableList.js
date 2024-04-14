@@ -11,7 +11,7 @@ export function useLoadableList(config) {
 
   async function getPage() {
     try {
-      let request = await api.get(`${config.api}?page=${current_page.value}&per_page=${config.per_page}`)
+      let request = await api.get(`${config.api}?page=${current_page.value}&per_page=${config.per_page}${config.queries ? config.queries : ''}`)
       if (request.status === 200) {
         store.value = request.data.data
         current_page.value = request.data.current_page

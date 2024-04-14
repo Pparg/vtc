@@ -1,22 +1,28 @@
 <script setup>
-  import Icon from '@/components/Icon.vue';
-  import Avatar from '@/components/Avatar.vue';
-  import Link from '@/components/Link.vue';
 
   import { useAuthStore } from '@/store/auth/authStore';
+
+  let emit = defineEmits(['closePanel']) 
 
   let user = useAuthStore();
   let user_role = user.getUser.role;
 
+  let close = () => {
+    emit('closePanel')
+  };
+
 </script>
 
 <template>
-  <header class="w-3 h-screen left_menu flex flex-column">
-    <Link :to="{name: 'home_main'}">
-    <template #content>
-      <h2 class="m-0 text-center pt-2">63 VTC</h2>
-    </template>
-    </Link>
+  <header class="left_menu flex flex-column">
+    <aside class="flex flex-row align-items-center pt-2 justify-content-between px-4">
+      <Link :to="{ name: 'home_main' }">
+        <template #content>
+          <h2 class="m-0 text-center">63 VTC</h2>
+        </template>
+      </Link>
+      <Icon :name="'times'" :size="14" @click="close" class="close_icon" />
+    </aside>
     <nav class="flex-1">
       <ul class="list-none p-0 ml-3 mt-5 flex flex-column gap-4">
         <Link :to="{ name: 'dashboard' }">
@@ -27,10 +33,14 @@
           </div>
         </template>
         </Link>
-        <li class="flex flex-row align-items-center gap-2 cursor-pointer">
-          <Icon :name="'bolt'"></Icon>
-          <p class="p-0 m-0">Mes courses</p>
-        </li>
+        <Link :to="{ name: 'user_reservation' }" v-if="['admin', 'user'].includes(user_role)">
+        <template #content>
+          <div class="flex align-items-center gap-2 font-normal">
+            <Icon :name="'bolt'"></Icon>
+            <p class="p-0 m-0">Mes courses</p>
+          </div>
+        </template>
+        </Link>
         <Link :to="{ name: 'user_address' }" v-if="['admin', 'user'].includes(user_role)">
         <template #content>
           <div class="flex align-items-center gap-2 font-normal">
@@ -87,10 +97,21 @@
 <style lang="scss">
   
   @import '../../../../src/assets/styles/global.scss';
+  @import '../../../../src/assets/styles/responsive.scss';
 
   .left_menu {
     background-color: $background-light;
-    border-right: 1px solid $border;
-    max-width: 200px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    @include medium-screen {
+      width: 30%;
+    }
+    @include large-screen {
+      position: relative;
+      max-width: 170px;
+      height: 100vh;
+    }
   }
+
 </style>

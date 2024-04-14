@@ -4,7 +4,7 @@
 
   import { useRouter } from 'vue-router';
 
-  import { edit as editAddress, get as getAddress} from '@/utils/address.js'
+  import { edit as editAddress, get as getAddress, setAdress, setDetails} from '@/utils/address.js'
   
   let props = defineProps({
     address_id: {
@@ -17,7 +17,9 @@
   let router = useRouter()
   let address = await getAddress(props.address_id)
 
-  let edited_address = ref(address)
+  let edited_address = ref({
+    name: address.name
+  })
 
   let map_center = ref({
     lat: address.latitude,
@@ -34,13 +36,25 @@
 
   let setPlace = (place) => {
     if (place.geometry) {
-     
+     let formated_address = setAdress(place)
+     edited_address.value = {...edited_address.value, ...formated_address}
     }
+    enabled.value = true
+    let place_details = setDetails(place)
+    marker_details.value = {
+      ...marker_details.value,
+      position: place_details.position
+    }
+    map_center.value = place_details.center
+    zoom_level.value = 15
   }
 
   let handleEdit = async () => {
     try {
-
+      let request = await editAddress(props.address_id, edited_address.value)
+      if (request.status === 204) {
+        router.push({name: 'user_address'})
+      }
     } catch (error) {
       console.log(error)
     }
@@ -60,13 +74,14 @@
         </template>
       </Link >
       <div class="flex align-items-center justify-content-between">
-        <h2 class="text-xl">Modification d'une addresse</h2>
+        <h2 class="text-xl">Modification d'une adresse</h2>
         <Button :label="'Sauvegarder'" @click="handleEdit" v-if="enabled"></Button>
       </div>
     </header>
     <article class="flex flex-column gap-2" >
       <InputText v-model="edited_address.name" />
-      <GMapAutocomplete placeholder="Cherchez votre addresse" class="border-round-md w-full m-0 p-0 mb-3 text-md py-1" @place_changed="setPlace"/>
+      <span>Adresse sauvegardée : {{ address.address }}</span>
+      <GMapAutocomplete placeholder="Modifier votre adresse" class="border-round-md w-full m-0 p-0 mb-3 text-md py-1" @place_changed="setPlace"/>
     </article>
     <article>
       <GMapMap :center="map_center" :zoom="zoom_level" map-type-id="terrain" style="width: 100%; height: 20rem" :options="{ zoomControl: true, mapTypeControl: true, scaleControl: true, streetViewControl: true, rotateControl: true, fullscreenControl: true }">

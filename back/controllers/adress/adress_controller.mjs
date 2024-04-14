@@ -6,10 +6,9 @@ let index = async (req, res) => {
     let page = parseInt(req.query.page || 1)
     let per_page = parseInt(req.query.per_page || 10)
     let offset = (page - 1) * per_page
-    let current_user = req.user
     let user_adresses = await Address.findAll({
       where: {
-        user_id: current_user.id
+        user_id: req.user.id
       },
       order: [['created_at', 'DESC']],
       offset: offset,
@@ -18,13 +17,13 @@ let index = async (req, res) => {
     })
     let total_count = await Address.count({
       where: {
-        user_id: current_user.id
+        user_id: req.user.id
       }
     })
     let total_pages = Math.ceil(total_count / per_page)
     res.successResponse(200, {
       data: user_adresses,
-      current_user: page,
+      current_page: page,
       total_pages: total_pages,
       total: total_count
     })
@@ -36,11 +35,10 @@ let index = async (req, res) => {
 // [GET] /adress/:id
 let show = async (req, res) => {
   try {
-    let current_user = req.user
     let adress = await Address.findOne({
       where: {
         id: req.params.id,
-        user_id: current_user.id
+        user_id: req.user.id
       },
       attributes: ['id', 'address', 'city', 'zip_code', 'country', 'comment', 'name', 'longitude', 'latitude']
     })
@@ -53,11 +51,11 @@ let show = async (req, res) => {
 // [POST] /adress/
 let create = async (req, res) => {
   try {
-    let current_user = req.user
     let new_adress = await Address.create({
       ...req.data,
-      user_id: current_user.id
+      user_id: req.user.id
     })
+    res.successResponse(204)
   } catch (error) {
     res.errorResponse(500, error.message)
   }
@@ -66,9 +64,13 @@ let create = async (req, res) => {
 // [PATCH] /adress/:id
 let update = async (req, res) => {
   try {
-    let current_user = req.user
-    let edited_adress = 'test' //TODO
-    res.successResponse(200, edited_adress)
+    let updated_address = await Address.update(req.data, {
+      where: {
+        id: req.params.id,
+        user_id: req.user.id
+      }
+    })
+    res.successResponse(200, updated_address)
   } catch (error) {
     res.errorResponse(500, error.message)
   }
@@ -77,8 +79,12 @@ let update = async (req, res) => {
 // [DELETE] /adress/:id
 let remove = async (req, res) => {
   try {
-    let current_user = req.user
-    let adress = await Address.findOne({where: {id: req.params.id, user_id: current_user.id}})
+    let adress = await Address.findOne({
+      where: {
+        id: req.params.id,
+        user_id: req.user.id
+      }
+    })
     await adress.destroy()
     res.successResponse(204)
   } catch (error) {

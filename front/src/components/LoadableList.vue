@@ -18,12 +18,17 @@
     cache: {
       type: Boolean,
       default: false
+    },
+    queries: {
+      type: String,
+      default: ''
     }
   });
 
   let { getPage, no_results, handleNext, handlePrevious, reloadData, count, current_page, store} = useLoadableList({
     api: props.api,
-    per_page: props.per_page
+    per_page: props.per_page,
+    queries: props.queries
   })
 
   let items = ref([])

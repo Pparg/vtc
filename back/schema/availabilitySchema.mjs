@@ -42,7 +42,7 @@ let dayConfigSchema = z.object({
       message: "L'heure de fin doit être postérieure à l'heure de début."
     })
   ).refine((value) => isCoherent(value), {
-    message: "Les plage horaires ne doivent pas se super poser."
+    message: "Les plages horaires ne doivent pas se super poser."
   }),
   multiple: z.boolean(),
   dates: z.array(
@@ -79,4 +79,16 @@ let weekConfigSchema = z.object({
   ).optional()
 })
 
-export {weekConfigSchema, dayConfigSchema}
+let timeRangeSchema = z.array(
+  z.object({
+    start: z.string(),
+    end: z.string(),
+    id: z.string()
+  }).refine((value) => isBefore(value), {
+    message: "L'heure de fin doit être postérieure à l'heure de début."
+  })
+).refine((value) => isCoherent(value), {
+  message: "Les plages horaires ne doivent pas se super poser."
+})
+
+export {weekConfigSchema, dayConfigSchema, timeRangeSchema}

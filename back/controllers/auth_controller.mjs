@@ -26,7 +26,11 @@ let login = async (req, res) => {
         isAdmin: authUser.role === 'admin'
       })
     } else {
-      res.errorResponse(400, authUser)
+      console.log(authUser.message, '*****')
+      res.errorResponse(400, [{
+        path: ['invalid'],
+        message: authUser.message
+      }])
     }
   } catch (error) {
     res.errorResponse(500, error.message)

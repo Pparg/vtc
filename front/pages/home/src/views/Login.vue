@@ -13,7 +13,7 @@
   import InputPassword from '@/components/InputPassword.vue';
   import Button from '@/components/Button.vue';
 
-  let { setErrors, fieldHasErrors, getFieldErrorMessage } = ErrorObject()
+  let { setErrors, fieldHasErrors, getFieldErrorMessage, getErrors } = ErrorObject()
 
   let router = useRouter()
 

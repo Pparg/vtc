@@ -21,38 +21,13 @@ let Ride = sequelize.define('Ride', {
       key: 'id'
     }
   },
-  car_id: {
-    type: DataTypes.SMALLINT,
-    references: {
-      model: 'cars',
-      key: 'id'
-    }
-  },
-  address_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'address',
-      key: 'id'
-    }
-  },
-  review_id: {
-    type: DataTypes.BIGINT,
-    references: {
-      model: 'reviews',
-      key: 'id'
-    }
-  },
   destination: {
     type: DataTypes.TEXT, 
     allowNull: false
   },
-  city: {
-    type: DataTypes.STRING(100),
-    defaultValue: 'clermont-ferrand',
-  },
-  zip_code: {
-    type: DataTypes.STRING(20),
-    defaultValue: '63000'
+  departure: {
+    type: DataTypes.TEXT,
+    allowNull: false
   },
   date: {
     type: DataTypes.DATE,
@@ -66,23 +41,18 @@ let Ride = sequelize.define('Ride', {
     type: DataTypes.DATE,
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   },
-  accepted_at: {
-    type: DataTypes.DATE
-  },
   comments: {
     type: DataTypes.TEXT
   },
-  distance_km: {
-    type: DataTypes.DECIMAL(6,2),
+  number_of_people: {
+    type: DataTypes.INTEGER,
     allowNull: false
   },
-  estimated_price: {
-    type: DataTypes.DECIMAL(10,2),
-    allowNull: false
+  distance_km: {
+    type: DataTypes.DECIMAL(6,2),
   },
   estimated_time: {
     type: DataTypes.TIME,
-    allowNull: false
   }
 }, {
   tableName: 'rides',

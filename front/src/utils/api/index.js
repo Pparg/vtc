@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { handleUnAuthorizeError } from "../interceptors/response";
+
 // TODO@PP : add env variables
 
 let api = axios.create({
@@ -10,5 +12,6 @@ let api = axios.create({
   }
 })
 
+api.interceptors.response.use(response => response, handleUnAuthorizeError)
 
 export default api

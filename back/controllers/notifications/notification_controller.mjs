@@ -43,7 +43,13 @@ let show = async(req, res) => {
     let notification = await Notification.findByPk(req.params.notif_id, {
       attributes: ['title', 'content', 'type', 'publication_date']
     })
-    res.successResponse(200, notification.dataValues)
+    if (notification) {
+      res.successResponse(200, notification.dataValues)
+    } else {
+      res.errorResponse(404, {
+        data: 'not found'
+      })
+    }
   } catch (error) {
     res.errorResponse(500, error.message)
   }

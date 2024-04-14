@@ -38,6 +38,34 @@ export let getAvailabilityConfig = (today_start, today_end) => {
   }
 }
 
+export async function updateAvailability(availability, chofer_id) {
+  let availability_edit = await sequelize.transaction()
+  try {
+    for (let time_range of availability) {
+      await Availability.update({
+        start_time: time_range.start,
+        end_time: time_range.end
+      }, {
+        where: {
+          id: Number(time_range.id),
+          chofer_id: chofer_id
+        },
+        transaction: availability_edit
+      })
+    }
+    await availability_edit.commit()
+    return {
+      success: true
+    }
+  } catch (error) {
+    await availability_edit.rollback()
+    return {
+      success: false,
+      errors: error
+    }
+  }
+}
+
 export async function checkAvailabilityAndCreateOrDestroy(chofer_id, type, data) {
   let availability_transaction = await sequelize.transaction()
   try {

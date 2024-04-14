@@ -10,6 +10,10 @@
     max: {
       type: String,
       required: false
+    },
+    min: {
+      type: String, 
+      required: false
     }
   });
 

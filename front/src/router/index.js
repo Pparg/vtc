@@ -4,10 +4,10 @@ import { useAuthStore } from '@/store/auth/authStore'
 
 import HomeRoutes from './home/homeRouter'
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [{
-    path: '/:catchAll(.*)',
+    path: '/:catchAll(.*)*',
     name: 'not_found',
     redirect: () => {
       let user = useAuthStore()
@@ -41,8 +41,45 @@ const router = createRouter({
       name: 'account',
       component: () => import ('../../pages/dashboard/src/views/AccountView.vue')
     }, {
+      path: 'reservation',
+      name: 'reservation_layout',
+      meta: {
+        user_only: true
+      },
+      component: () => import('../../pages/dashboard/src/views/ReservationView.vue'),
+      children: [{
+        path: '',
+        name: 'user_reservation',
+        component: () => import('../../pages/dashboard/src/views/reservation/ReservationListView.vue')
+      }, {
+        path: 'add',
+        name: 'new_reservation',
+        component: () => import('../../pages/dashboard/src/views/reservation/AddReservationView.vue')
+      }, {
+        path: 'remove/:reservation_id',
+        name: 'remove_reservation',
+        component: () => import('../../pages/dashboard/src/views/reservation/DeleteReservationView.vue'),
+        props: (route) => {
+          return {
+            reservation_id: parseInt(route.params.reservation_id)
+          }
+        }
+      }, {
+        path: 'edit/:reservation_id',
+        name: 'edit_reservation',
+        component: () => import('../../pages/dashboard/src/views/reservation/EditReservationView.vue'),
+        props: (route) => {
+          return {
+            reservation_id: parseInt(route.params.reservation_id)
+          }
+        }
+      }]
+    }, {
       path: 'adresse',
-      name: 'address_layout',
+      name: 'address_layout', 
+      meta: {
+        user_only: true
+      },
       component: () => import ('../../pages/dashboard/src/views/AddressView.vue'),
       children: [{
         path: '',
@@ -53,7 +90,7 @@ const router = createRouter({
         name: 'new_address',
         component: () => import ('../../pages/dashboard/src/views/address/AddAddressView.vue')
       }, {
-        path: ':address_id',
+        path: 'remove/:address_id',
         name: 'remove_address',
         props: (route) => {
           return {
@@ -119,6 +156,24 @@ const router = createRouter({
         path: 'add',
         name: 'add_availability',
         component: () => import ('../../pages/dashboard/src/views/availability/AddAvailabilityView.vue')
+      }, {
+        path: 'edit/:availability_id',
+        name: 'edit_availability',
+        props: (route) => {
+          return {
+            availability_id: parseInt(route.params.availability_id)
+          }
+        }, 
+        component: () => import ('../../pages/dashboard/src/views/availability/EditAvailabilityView.vue')
+      }, {
+        path: 'remove/:availability_id',
+        name: 'remove_availability',
+        props: (route) => {
+          return {
+            availability_id: parseInt(route.params.availability_id)
+          }
+        },
+        component: () => import ('../../pages/dashboard/src/views/availability/DeleteAvailabilityView.vue')
       }]
     }, {
       path: 'cars',
@@ -195,6 +250,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (to.meta.require_auth) {
     let user = useAuthStore()
+    let role = user.getUser.role
     if (user.isLogged) {
       if (to.meta.admin_only) {
         if (user.isAdmin) {
@@ -202,9 +258,23 @@ router.beforeEach((to, from, next) => {
         } else {
           next('/')
         }
+      } else if (to.meta.user_only) {
+        console.log('here')
+        if (role === 'user' || user.isAdmin) {
+          next()
+        } else {
+          next('/')
+        }
+      } else if (to.meta.chofer_only) {
+        if (role === 'chofer') {
+          next()
+        } else {
+          next('/')
+        }
       } else {
         next()
-      }
+      } 
+
     } else {
       next('/login')
     }

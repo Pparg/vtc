@@ -12,6 +12,7 @@ import AdminRouter from "./admin/adminRouter.mjs"
 import ChofferRouter from "./chofers/chofferRouter.mjs";
 import NotificationRouter from "./notification/notificationRouter.mjs";
 import AvailabilityRouter from "./availability/availabilityRouter.mjs";
+import RideRouter from "./rides/rideRouter.mjs";
 
 let ApiRouter = Router()
 
@@ -31,18 +32,19 @@ ApiRouter.use('/adress', authenticateToken, AdressRouter )
 ApiRouter.use('/cars', authenticateToken, CarsRouter)
 
 // Admin
+// ApiRouter.use('/admin', authenticateToken, hasRight(['admin']), AdminRouter)
 
 // Notification
-
 ApiRouter.use('/notifications', authenticateToken, NotificationRouter)
 
 // Choffers
-
 ApiRouter.use('/choffers', authenticateToken, ChofferRouter)
 
+// Availability
 ApiRouter.use('/availability', authenticateToken, hasRight(['admin', 'chofer']), AvailabilityRouter)
 
-// ApiRouter.use('/admin', authenticateToken, hasRight(['admin']), AdminRouter)
+// Rides
+ApiRouter.use('/rides', authenticateToken, hasRight(['admin', 'user']), RideRouter)
 
 export default ApiRouter
 

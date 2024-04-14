@@ -2,7 +2,7 @@
 
   import { onMounted, ref } from 'vue';
 
-  import { create as createAddress } from '@/utils/address';
+  import { create as createAddress, setAdress, setDetails } from '@/utils/address';
 
   import { useRouter } from 'vue-router';
 
@@ -29,28 +29,17 @@
 
   let setPlace = (place) => {
     if (place.geometry) {
-      let formated_address = [place.address_components[0].long_name, place.address_components[1].long_name].join(' ')
+      let formated_address = setAdress(place)
       new_address.value = {
-        ...new_address.value,
-        city: place.address_components[2].long_name,
-        zip_code: place.address_components[6].long_name,
-        country: place.address_components[5].short_name,
-        longitude: place.geometry.location.lng(),
-        latitude: place.geometry.location.lat(),
-        address: formated_address
+        ...new_address.value, ...formated_address
       }
       enabled.value = true
+      let place_details = setDetails(place)
       markerDetails.value = {
         ...markerDetails.value,
-        position: {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng()
-        }
+        position: place_details.position
       }
-      map_center.value = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
-      }
+      map_center.value = place_details.center
       zoom_level.value = 15
     } else {
       enabled.value = false
