@@ -1,12 +1,14 @@
 import { Router } from "express";
 
 import validateSchema from "../../middlewares/validates/body.mjs";
-import { get, create, edit, remove, show, chofer_get} from '../../controllers/rides/rides_controller.mjs'
+import { get, create, edit, remove, show, chofer_get, get_resume} from '../../controllers/rides/rides_controller.mjs'
 import hasRight from "../../middlewares/authorization/authorizationMiddleware.mjs";
 
 let RideRouter = Router()
 
 RideRouter.get('/chofer', hasRight(['admin', 'chofer']), chofer_get)
+
+RideRouter.get('/resume', get_resume)
 
 RideRouter.get('/', hasRight(['admin', 'user', 'chofer']), get)
 RideRouter.get('/:ride_id', hasRight(['admin', 'user']), show)

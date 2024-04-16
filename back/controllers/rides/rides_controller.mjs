@@ -35,6 +35,50 @@ let get = async (req, res) => {
   }
 }
 
+let get_resume = async (req, res) => {
+  try {
+    let today = new Date()
+    let current_hour = new Date(today.setHours(today.getHours() + 2, today.getMinutes(), 0, 0))
+    let role_attribute = ['admin', 'user'].includes(req.user.role) ? 'user_id' : 'chofer_id'
+    let last_reservation = await Rides.findAll({
+      where: {
+        [role_attribute]: req.user.id,
+        date: {
+          [Op.lte]: today
+        },
+        hour: {
+          [Op.lt]: current_hour
+        }
+      },
+      limit: 3,
+      order: [['date', 'ASC'], ['hour', 'ASC']],
+      attributes: ['destination', 'departure', 'date', 'hour']
+    })
+    let pending_reservation = await Rides.findAll({
+      where: {
+        [role_attribute]: req.user.id,
+        date: {
+          [Op.gte]: today
+        },
+        hour: {
+          [Op.gte]: current_hour
+        }
+      },
+      limit: 3,
+      order: [['date', 'ASC'], ['hour', 'ASC']],
+      attributes: ['destination', 'departure', 'date', 'hour']
+    })
+
+    res.successResponse(200, {
+      pending: pending_reservation,
+      passed: last_reservation
+    })
+
+  } catch (error) {
+    res.errorResponse(500, error.message)
+  }
+}
+
 let chofer_get = async (req, res) => {
   try {
     let today = new Date()
@@ -172,4 +216,4 @@ let create = async (req, res) => {
   }
 }
 
-export { get, chofer_get, create, edit, show, remove}
+export { get, chofer_get, create, edit, show, remove, get_resume}

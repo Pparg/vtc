@@ -25,3 +25,7 @@ export async function edit(id, data) {
 export async function remove(id) {
   return await api.delete(`/rides/${id}`)
 }
+
+export async function getRidesSummary() {
+  return (await api.get('/rides/resume')).data
+}
