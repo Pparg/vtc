@@ -56,16 +56,16 @@
 <template>
   <article>
     <fieldset class="flex flex-column gap-2 border-none p-0">
-      <div class="flex flex-column w-8 gap-2" v-if="['user', 'chofer'].includes(current_user.role)">
+      <div class="flex flex-column w-11 gap-2 input_containers" v-if="['user', 'chofer'].includes(current_user.role)">
         <span class="text-sm">Mot de passe actuel</span>
         <InputPassword v-model="password_info.current_password"></InputPassword>
         <p v-if="fieldHasErrors('base')" class="text-xxs p_errors m-0">{{ getFieldErrorMessage('base')}}</p>
       </div>
-      <div class="flex flex-column w-8 gap-2" v-if="['user', 'chofer'].includes(current_user.role)">
+      <div class="flex flex-column w-11 gap-2 input_containers" v-if="['user', 'chofer'].includes(current_user.role)">
         <span class="text-sm">Nouveau mot de passe</span>
         <InputPassword v-model="password_info.new_password"></InputPassword>
       </div>
-      <div class="flex flex-column w-8 gap-2" v-if="['user', 'chofer'].includes(current_user.role)">
+      <div class="flex flex-column w-11 gap-2 input_containers" v-if="['user', 'chofer'].includes(current_user.role)">
         <span class="text-sm">Confirmez le nouveau mot de passe</span>
         <InputPassword v-model="password_info.validation_password"></InputPassword>
         <p v-if="verification_error" class="text-xxs p_errors">Le mot de passe est incorecte</p>
@@ -80,5 +80,12 @@
 </template>
 
 <style lang="scss">
+  @import '../../../../../src/assets/styles/responsive.scss';
+
+  .input_containers {
+    @include medium-screen {
+      max-width: 400px;
+    }
+  }
 
 </style>

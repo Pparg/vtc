@@ -5,7 +5,7 @@
   import LeftMenu from './src/layout/LeftMenu.vue';
   import TopMenu from './src/layout/TopMenu.vue';
   
-  let menu_is_open = ref(true);
+  let menu_is_open = ref(false);
 
   let handleToggleMenu = () => {
     menu_is_open.value = !menu_is_open.value

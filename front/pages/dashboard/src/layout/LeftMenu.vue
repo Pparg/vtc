@@ -17,9 +17,9 @@
   <header class="left_menu flex flex-column">
     <aside class="flex flex-row align-items-center pt-2 justify-content-between px-4">
       <Link :to="{ name: 'home_main' }">
-        <template #content>
-          <h2 class="m-0 text-center">63 VTC</h2>
-        </template>
+      <template #content>
+        <h2 class="m-0 text-center">63 VTC</h2>
+      </template>
       </Link>
       <Icon :name="'times'" :size="14" @click="close" class="close_icon" />
     </aside>
@@ -34,6 +34,14 @@
         </template>
         </Link>
         <Link :to="{ name: 'user_reservation' }" v-if="['admin', 'user'].includes(user_role)">
+        <template #content>
+          <div class="flex align-items-center gap-2 font-normal">
+            <Icon :name="'bolt'"></Icon>
+            <p class="p-0 m-0">Mes courses</p>
+          </div>
+        </template>
+        </Link>
+        <Link :to="{ name: 'chofer_reservations' }" v-if="['chofer'].includes(user_role) ">
         <template #content>
           <div class="flex align-items-center gap-2 font-normal">
             <Icon :name="'bolt'"></Icon>
@@ -104,7 +112,9 @@
     width: 100%;
     height: 100%;
     position: absolute;
+    z-index: 10;
     @include medium-screen {
+      display: flex;
       width: 30%;
     }
     @include large-screen {

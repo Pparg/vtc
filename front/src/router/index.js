@@ -75,6 +75,18 @@ export const router = createRouter({
         }
       }]
     }, {
+      path: 'chofer/reservation',
+      name: 'chofer_reservation',
+      meta: {
+        chofer_only: true
+      },
+      component: () => import('../../pages/dashboard/src/views/choffer/reservation/ChoferReservationView.vue'),
+      children: [{
+        path: '',
+        name: 'chofer_reservations',
+        component: () => import('../../pages/dashboard/src/views/choffer/reservation/ChoferReservationListView.vue')
+      }]
+    }, {
       path: 'adresse',
       name: 'address_layout', 
       meta: {

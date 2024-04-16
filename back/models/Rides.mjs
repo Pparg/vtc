@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes, TIME } from "sequelize";
 import sequelize from "../config/database.mjs";
+import User from "./Users.mjs";
 
 let Ride = sequelize.define('Ride', {
   id: {
@@ -59,5 +60,14 @@ let Ride = sequelize.define('Ride', {
   timestamps: false
 }
 )
+
+Ride.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'user'
+})
+User.hasMany(Ride, {
+  foreignKey: 'user_id',
+  as: 'user'
+})
 
 export default Ride

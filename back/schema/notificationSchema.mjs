@@ -8,7 +8,9 @@ let notificationSchema = z.object({
   content: z.string().min(1, {
     message: "Veuillez remplir ce champs."
   }),
-  type: z.string().optional(),
+  type: z.string().min(1, {
+    message: "Veuillez selectionnez le type de la notification."
+  }),
   publication_date: z.string().datetime({
     message: 'Veuillez remplir ce champs.'
   })

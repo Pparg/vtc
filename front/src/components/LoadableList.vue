@@ -53,7 +53,7 @@
       <div v-for="item in items" :key="item.id">
         <slot name="content" :data="item"/>
       </div>
-      <aside class="flex flex-column align-items-center gap-2">
+      <aside class="flex flex-column align-items-center gap-2" v-if="count">
         <p class="m-0">Total: {{ count }}</p>
         <div class="flex flex-row align-items-center gap-3 justify-content-center">
           <Icon name="chevron-left" @click="handlePrevious" :size="16" />

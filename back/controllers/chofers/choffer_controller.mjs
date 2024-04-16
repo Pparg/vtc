@@ -37,9 +37,10 @@ let create = async (req, res) => {
     let choffer_email = req.data.email
     let chofer_exists = await Chofer.findOne({where: {email: choffer_email}})
     if (chofer_exists) {
-      res.errorResponse(400, {
+      res.errorResponse(400, [{
+        path: ['base'],
         message: 'Ce compte existe déjà.'
-      })
+      }])
     } else {
       let role = await Role.findOne({where: {name: 'chofer'}})
       let new_choffer = await Chofer.create({

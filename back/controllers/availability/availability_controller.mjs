@@ -5,12 +5,10 @@ import { setAvailabilityConfig, checkAvailabilityAndCreateOrDestroy, updateAvail
 
 let index = async (req, res) => {
   try {
-    console.log(req.query)
     let page = parseInt(req.query.page || 1)
     let per_page = parseInt(req.query.per_page || 10)
     let offset = (page - 1) * per_page
     let date_config = setAvailabilityConfig(req.query.type)
-    console.log(date_config, '------')
     let chofer_availability = await Availability.findAll({
       where: {
         chofer_id: req.user.id,
@@ -75,7 +73,10 @@ let create = async (req, res) => {
     if (availability_creation.success) {
       res.successResponse(201)
     } else {
-      res.errorResponse(400, availability_creation.error )
+      res.errorResponse(400, [{
+        path: ['base'],
+        message: availability_creation.error
+      }])
     }
   } catch (error) {
     res.errorResponse(500, error.message )
@@ -88,7 +89,10 @@ let update = async (req, res) => {
     if (availability_edition.success) {
       res.successResponse(204)
     } else {
-      res.errorResponse(400, availability_edition.errors)
+      res.errorResponse(400, [{
+        path: ['base'], 
+        message: availability_edition.errors
+      }])
     }
 
   } catch (error) {

@@ -29,7 +29,7 @@
       </div>
     </header>
     <article>
-      <div class="flex flex-column gap-2">
+      <div class="flex flex-column gap-2" v-if="false">
         <label>Choissisez votre configuration</label>
         <Dropdown v-model="type" :options="creation_type_dropdown" class="w-5" />
       </div>

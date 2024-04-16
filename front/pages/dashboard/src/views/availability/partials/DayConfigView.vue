@@ -5,8 +5,12 @@
   import InputHour from '@/components/InputHour.vue';
   import Checkbox from '@/components/Checkbox.vue'
   import Calendar from '@/components/Calendar.vue';
+  
+  import { ErrorObject } from '@/composables/errors/index'
 
   import { create as createAvailability, formatModel } from '@/utils/availability.js'
+
+  let { setErrors, fieldHasErrors, getFieldErrorMessage, getErrors } = ErrorObject()
 
   let day_config = ref({
     date: '',
@@ -57,7 +61,7 @@
       let formated_data = formatModel(day_config.value, 'single')
       let request = await createAvailability('single', formated_data)
     } catch (error) {
-      console.log(error)
+      setErrors(error.response.data.errors)
     }
   };
 

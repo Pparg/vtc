@@ -6,9 +6,11 @@
   import { ref, watch } from 'vue';
   import { useRouter } from 'vue-router';
 
+  import { ErrorObject } from '@/composables/errors/index'
+
   import { setMapDefault, handleMap } from '@/utils/address.js'
   import { create as createReservation, adressAreValid } from '@/utils/rides.js'
-
+  
   import Calendar from '@/components/Calendar.vue';
   import InputHour from '@/components/InputHour.vue';
 
@@ -20,6 +22,8 @@
     date: '',
     hour: '',
   })
+
+  let { setErrors, fieldHasErrors, getFieldErrorMessage, getErrors } = ErrorObject()
 
   let router = useRouter()
   let map = ref(setMapDefault())
@@ -42,7 +46,7 @@
         router.push({name: 'user_reservation'})
       }
     } catch (error) {
-      console.log(error)
+      setErrors(error.response.data.errors)
     }
   };
 
@@ -109,6 +113,8 @@
       </div>
     </header>
     <article class="flex flex-column gap-2 mb-4">
+      <span v-if="fieldHasErrors('exists')" class="text-xs p_errors">{{ getFieldErrorMessage('exists') }}</span>
+      <span v-if="fieldHasErrors('base')" class="text-xs p_errors">{{ getFieldErrorMessage('base') }}</span>
       <aside class="flex flex-row gap-2">
         <div class="flex flex-column gap-2">
           <label>Jour: </label>
@@ -123,6 +129,9 @@
           <InputNumber v-model="new_reservation.number_of_people" :min="1" :max="4" class="h-full"/>
         </div>
       </aside>
+      <span v-if="fieldHasErrors('date')" class="text-xxs p_errors">{{ getFieldErrorMessage('date') }}</span>
+      <span v-if="fieldHasErrors('hour')" class="text-xxs p_errors">{{ getFieldErrorMessage('hour') }}</span>
+      <span v-if="fieldHasErrors('number_of_people')" class="text-xxs p_errors">{{ getFieldErrorMessage('number_of_people') }}</span>
       <aside class="flex flex-column gap-2">
         <label>Destination: </label>
         <GMapAutocomplete placeholder="Cherchez votre addresse" class="border-round-md w-full text-md p-1" @place_changed="setPlace( $event , 0)" />
@@ -133,7 +142,7 @@
       <p v-if="invalid_city" class="p_errors">Le service de réservation est dédié uniquement à la ville de Clermont-Ferrand.</p>
     <article>
       <GMapMap :center="map.center" :zoom="map.zoom" map-type-id="terrain" style="width: 100%; height: 20rem" :options="{ zoomControl: true, mapTypeControl: true, scaleControl: true, streetViewControl: true, rotateControl: true, fullscreenControl: true }">
-        <GMapMarker v-for="marker in markerDetails" :key="marker.id" :position="marker.position" :draggable="true" :clickable="true"></GMapMarker>
+        <GMapMarker v-for="marker in markerDetails" :key="marker.id" :position="marker.position" :draggable="false" :clickable="false"></GMapMarker>
       </GMapMap>
       <div class="flex flex-column gap-2">
         <label>Souhaitez vous precisez d'autre details ?</label>

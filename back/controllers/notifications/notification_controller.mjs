@@ -46,9 +46,10 @@ let show = async(req, res) => {
     if (notification) {
       res.successResponse(200, notification.dataValues)
     } else {
-      res.errorResponse(404, {
-        data: 'not found'
-      })
+      res.errorResponse(404, [{
+        path: ['base'],
+        message: 'not found'
+      }])
     }
   } catch (error) {
     res.errorResponse(500, error.message)

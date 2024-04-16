@@ -1,4 +1,8 @@
 import Rides from "../../models/Rides.mjs"
+import User from "../../models/Users.mjs"
+
+import { getAvailableChofer, isUnique } from "../../utils/ride.js"
+import { Op } from 'sequelize'
 
 let get = async (req, res) => {
   try {
@@ -9,7 +13,7 @@ let get = async (req, res) => {
       where: {
         user_id: req.user.id
       },
-      order: [['date', 'DESC']],
+      order: [['date', 'DESC'], ['hour', 'ASC']],
       offset: offset,
       limit: per_page,
       attributes: ['id', 'destination', 'departure', 'date', 'hour']
@@ -30,6 +34,72 @@ let get = async (req, res) => {
     res.errorResponse(500, error.message)
   }
 }
+
+let chofer_get = async (req, res) => {
+  try {
+    let today = new Date()
+    let current_hour = new Date(today.setHours(today.getHours() + 2, today.getMinutes(),0,0))
+    let chofer_reservations
+    let page = parseInt(req.query.page || 1)
+    let per_page = parseInt(req.query.per_page || 10)
+    let offset = (page - 1) * per_page
+    if (req.query.type === 'passed') {
+      chofer_reservations = await Rides.findAndCountAll({
+        where: {
+          chofer_id: req.user.id,
+          date: {
+            [Op.lte]: today
+          },
+          hour: {
+            [Op.lt]: current_hour
+          }
+        },
+        include: [{
+          model: User,
+          attributes: ['last_name', 'first_name', 'id'],
+          required: true,
+          as: 'user'
+        }],
+        order: [['date', 'ASC'], ['hour', 'ASC']],
+        offset: offset,
+        limit: per_page,
+        attributes: ['id', 'destination', 'departure', 'date', 'hour']
+      })
+    } else {
+      chofer_reservations = await Rides.findAndCountAll({
+        where: {
+          chofer_id: req.user.id,
+          date: {
+            [Op.gte]: today
+          },
+          hour: {
+            [Op.gte]: current_hour
+          }
+        },
+        include: [{
+          model: User,
+          attributes: ['last_name', 'first_name', 'id'],
+          required: true,
+          as: 'user'
+        }],
+        order: [['date', 'ASC'], ['hour', 'ASC']],
+        offset: offset,
+        limit: per_page,
+        attributes: ['id', 'destination', 'departure', 'date', 'hour']
+      })
+    }
+    let total_pages = Math.ceil(chofer_reservations.count / per_page)
+    res.successResponse(200, {
+      data: chofer_reservations.rows,
+      current_page: page,
+      total_pages: total_pages,
+      total: chofer_reservations.count
+    })
+  } catch (error) {
+    res.errorResponse(500, error.message) 
+  }
+}
+
 let edit = async (req, res) => {
   try {
     let updated_reservation = await Rides.update(req.data, {
@@ -43,6 +113,7 @@ let edit = async (req, res) => {
     res.errorResponse(500, error.message)
   }
 }
+
 let show = async (req, res) => {
   try {
     let reservation = await Rides.findOne({
@@ -52,17 +123,18 @@ let show = async (req, res) => {
       },
       attributes: ['id', 'destination', 'departure', 'number_of_people', 'date', 'hour', 'comments']
     })
-    res.successResponse(200, reservation.dataValues)
+    res.successResponse(200, reservation?.dataValues)
   } catch (error) {
     res.errorResponse(500, error.message)
   }
 }
+
 let remove = async (req, res) => {
   try {
     await Rides.destroy({
       where: {
-        id: req.params.id,
-        user_id: req.user.ride_id
+        id: req.params.ride_id,
+        user_id: req.user.id
       }
     })
     res.successResponse(204)
@@ -70,17 +142,34 @@ let remove = async (req, res) => {
     res.errorResponse(500, error.message)
   }
 }
+
 let create = async (req, res) => {
   try {
-    let reservation = await Rides.create({
-      ...req.data,
-      user_id: req.user.id,
-      chofer_id: 4,
-    })
-    res.successResponse(200, { test: 'create', data: reservation })
+    let is_unique = await isUnique(req.data, req.user.id)
+    if (is_unique) {
+      let available_chofer = await getAvailableChofer(req.data)
+      if (available_chofer) {
+        let reservation = await Rides.create({
+          ...req.data,
+          user_id: req.user.id,
+          chofer_id: available_chofer,
+        })
+        return res.successResponse(200, { test: 'create', data: reservation })
+      } else {
+        return res.errorResponse(400, [{
+          path: ['base'],
+          message: "Actuellement aucun chauffeur n'est disponible."
+        }])
+      }
+    } else {
+      return res.errorResponse(400, [{
+        path: ['exists'],
+        message: "Vous avez déjà éffectué une réservation à cette heure là."
+      }])
+    }
   } catch (error) {
     res.errorResponse(500, error.message)
   }
 }
 
-export { get, create, edit, show, remove}
+export { get, chofer_get, create, edit, show, remove}

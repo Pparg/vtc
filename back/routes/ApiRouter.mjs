@@ -8,7 +8,6 @@ import UserRouter from "./users/usersRouter.mjs";
 import RolesRouter from "./roles/rolesRouter.mjs";
 import AdressRouter from "./adress/adressRouter.mjs";
 import CarsRouter from "./cars/carsRouter.mjs";
-import AdminRouter from "./admin/adminRouter.mjs"
 import ChofferRouter from "./chofers/chofferRouter.mjs";
 import NotificationRouter from "./notification/notificationRouter.mjs";
 import AvailabilityRouter from "./availability/availabilityRouter.mjs";
@@ -31,9 +30,6 @@ ApiRouter.use('/adress', authenticateToken, AdressRouter )
 // Cars
 ApiRouter.use('/cars', authenticateToken, CarsRouter)
 
-// Admin
-// ApiRouter.use('/admin', authenticateToken, hasRight(['admin']), AdminRouter)
-
 // Notification
 ApiRouter.use('/notifications', authenticateToken, NotificationRouter)
 
@@ -44,7 +40,7 @@ ApiRouter.use('/choffers', authenticateToken, ChofferRouter)
 ApiRouter.use('/availability', authenticateToken, hasRight(['admin', 'chofer']), AvailabilityRouter)
 
 // Rides
-ApiRouter.use('/rides', authenticateToken, hasRight(['admin', 'user']), RideRouter)
+ApiRouter.use('/rides', authenticateToken, RideRouter)
 
 export default ApiRouter
 

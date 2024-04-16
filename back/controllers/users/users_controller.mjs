@@ -13,9 +13,10 @@ let create = async (req, res) => {
     let user_email = req.data.email
     let is_user = await User.findOne({ where: {email: user_email}})
     if (is_user) {
-      res.errorResponse(400, {
-        message: 'Ce compte existe déjà.'
-      })
+      res.errorResponse(400, [{
+        path: ['exists'],
+        message: 'Cette adresse email est déjà prise.'
+      }])
     } else {
       let is_admin = req.user && (req.user.role === 'admin')
       let role = is_admin ? await Role.findOne({where: {name: req.data.role}}) : await Role.findOne({where: {name: 'user'}})

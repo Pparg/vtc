@@ -12,7 +12,7 @@
 <template>
   <section class="px-3">
     <header>
-      <div class="flex align-items-center justify-content-between">
+      <div class="flex flex-column align-items-center justify-content-between container">
         <h2 class="text-xl">Centre de notifications</h2>
         <Button :label="'Ajouter une notification'" :type="'navigation'" :to="{name: 'new_notification'}" v-if="true" />
       </div>
@@ -61,4 +61,13 @@
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  @import '../../../../../src/assets/styles/responsive.scss';
+
+  .container {
+    @include medium-screen {
+      flex-direction: row !important;
+    }
+  }
+
+</style>

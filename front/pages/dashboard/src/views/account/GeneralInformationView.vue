@@ -46,38 +46,38 @@
 <template>
   <article>
     <fieldset class="flex flex-column gap-2 border-none p-0">
-      <div class="flex flex-row gap-2">
-        <div class="flex flex-column w-4 gap-2">
+      <div class="flex flex-row gap-2 w-11 input_containers">
+        <div class="flex flex-column w-6 gap-2">
           <span class="text-sm">Nom *</span>
           <InputText v-model="account_general.last_name"></InputText>
           <span v-if="fieldHasErrors('last_name')" class="text-xxs p_errors">Ce champs doit contenir 3 characters minimun</span>
         </div>
-        <div class="flex flex-column w-4 gap-2">
+        <div class="flex flex-column w-6 gap-2">
           <span class="text-sm">Prénom *</span>
           <InputText v-model="account_general.first_name"></InputText>
           <span v-if="fieldHasErrors('first_name')" class="text-xxs p_errors">Ce champs doit contenir 3 characters minimun</span>
         </div>
       </div>
-      <div class="flex flex-column w-8 gap-2">
+      <div class="flex flex-column w-11 gap-2 input_containers">
         <span class="text-sm">Email *</span>
         <InputText v-model="current_user.email" disabled></InputText>
       </div>
-      <div class="flex flex-row gap-2">
-        <div class="flex flex-column w-4 gap-2">
-          <span class="text-sm">Numéro de téléphone</span>
+      <div class="flex flex-row gap-2 w-11 input_containers">
+        <div class="flex flex-column w-6 gap-2">
+          <span class="text-sm">N° de téléphone</span>
           <InputText v-model="account_general.phone_number" class="h-full"></InputText>
         </div>
-        <div class="flex flex-column w-4 gap-2">
+        <div class="flex flex-column w-6 gap-2 input_containers">
           <span class="text-sm">Date de naissance</span>
           <Calendar v-model="account_general.birthday"></Calendar>
         </div>
       </div>
-      <div class="flex flex-column w-8 gap-2" v-if="current_user.role === 'chofer'">
+      <div class="flex flex-column w-11 gap-2 input_containers" v-if="current_user.role === 'chofer'">
         <span class="text-sm">Description</span>
         <TextArea v-model="account_general.description" :col="1"></TextArea>
       </div>
-      <div class="flex gap-2 align-items-center" v-if="current_user.role === 'user'">
-        <Checkbox  v-model="account_general.newsletter"/>
+      <div class="flex gap-2 w-11 align-items-center input_containers" v-if="current_user.role === 'user'">
+        <Checkbox  v-model="account_general.newsletter" />
         <label class="text-sm">Recevoir les newsletters</label>
       </div>
     </fieldset>
@@ -87,4 +87,12 @@
   </article>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+  @import '../../../../../src/assets/styles/responsive.scss';
+
+  .input_containers {
+    @include medium-screen {
+      max-width: 400px;
+    }
+  }
+</style>

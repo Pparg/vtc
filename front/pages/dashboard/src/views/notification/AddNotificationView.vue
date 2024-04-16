@@ -78,6 +78,7 @@
       <div class="flex flex-column gap-2">
         <label>Type de notification</label>
         <Dropdown v-model="new_notification.type" :options="dropdown_options" :placeholder="'Selectionnez un type de notification'" class="w-10" />
+        <span v-if="fieldHasErrors('type')" class="text-xxs p_errors">{{ getFieldErrorMessage('type') }}</span>
       </div>
       <div class="flex flex-column gap-2">
         <label>Date de publication</label>

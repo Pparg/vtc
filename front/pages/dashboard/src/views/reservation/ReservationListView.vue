@@ -51,9 +51,7 @@
         </template>
         <template #no_results>
           <aside class="flex flex-column align-items-center gap-2">
-            <h4 class="m-0">Vous n'avez pas encore d'addresses favorites.</h4>
-            <p class="m-0 text-sm">Simplifiez vos déplacement.</p>
-            <Button :label="'Ajouter une addresse'" :type="'navigation'" :to="{ name: 'new_address' }" />
+            <h4 class="m-0">Vous n'avez pas encore effectué de reservation.</h4>
           </aside>
         </template>
       </LoadableList>

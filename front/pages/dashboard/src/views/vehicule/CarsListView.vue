@@ -10,7 +10,7 @@
 <template>
   <section class="px-3">
     <header>
-      <div class="flex align-items-center justify-content-between">
+      <div class="flex flex-column align-items-center justify-content-between container">
         <h2 class="text-xl">Véhicules</h2>
         <Button :label="'Ajouter un véhicule'" :type="'navigation'" :to="{name: 'new_vehicule'}" v-if="true"/>
       </div>
@@ -55,4 +55,11 @@
 </template>
 
 <style lang="scss" scoped>
+  @import '../../../../../src/assets/styles/responsive.scss';
+
+  .container {
+    @include medium-screen {
+      flex-direction: row !important;
+    }
+  }
 </style>

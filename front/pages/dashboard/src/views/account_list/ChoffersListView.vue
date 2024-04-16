@@ -11,7 +11,7 @@
 </script>
 
 <template>
-  <section class="px-3 ">
+  <section>
     <header class="flex flex-column align-items-center mb-3">
       <Button :label="'Créer un compte chauffeur.'" :type="'navigation'" :to="{ name: 'users_new_choffer' }" />
     </header>
