@@ -50,7 +50,10 @@ let maintain_session = (req, res) => {
     }
     jwt.verify(token, process.env.SECRET_KEY, async (err, user) => {
       if (err) {
-        return res.errorResponse(403, 'Token invalide')
+        return res.errorResponse(403, [{
+          path: ['base'],
+          message: 'token invalide'
+        }])
       } else {
         let account_id = user.id
         let current_account

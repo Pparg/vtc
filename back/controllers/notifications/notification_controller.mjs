@@ -81,7 +81,6 @@ let edit = async (req, res) => {
 
 let remove = async (req, res) => {
   try {
-    console.log(req.data, '****')
     let notification_to_delete = await Notification.destroy({
       where: {
         id: req.params.notif_id

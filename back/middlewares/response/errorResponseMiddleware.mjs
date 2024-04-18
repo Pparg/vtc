@@ -8,10 +8,12 @@ let errorResponseMiddleware = (req, res, next) => {
         base: 'API error'
       }
     } else {
-      console.log(errors, 'test')
       errors.forEach(error => {
         let field = error.path[0]
-
+        let field_index = error.path[1]
+        if (field_index !== undefined) {
+          field += `_${field_index}`
+        }
         if (!temps_errors[field]) {
           temps_errors[field] = error.message
         } else {

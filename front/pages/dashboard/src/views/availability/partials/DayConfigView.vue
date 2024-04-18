@@ -7,10 +7,14 @@
   import Calendar from '@/components/Calendar.vue';
   
   import { ErrorObject } from '@/composables/errors/index'
+  import { useRouter } from 'vue-router';
+
 
   import { create as createAvailability, formatModel } from '@/utils/availability.js'
 
   let { setErrors, fieldHasErrors, getFieldErrorMessage, getErrors } = ErrorObject()
+
+  let router = useRouter()
 
   let day_config = ref({
     date: '',
@@ -60,6 +64,9 @@
     try {
       let formated_data = formatModel(day_config.value, 'single')
       let request = await createAvailability('single', formated_data)
+      if (request.status === 204) {
+        router.push({ name: 'availability_overwiew'})
+      }
     } catch (error) {
       setErrors(error.response.data.errors)
     }
@@ -70,22 +77,27 @@
 <template>
   <aside class="mb-5">
     <Button :label="'Sauvegarder'" @click="handleSubmit"></Button>
-    <p class="p-0 m-0">Cette configuration prendra le dessus sur les autres configuration. Par exemple si vous avez
-      configurer un mois alors les configuration prendrons le dessus</p>
     <div class="flex flex-column gap-2">
       <label>Date: </label>
-      <Calendar v-model="day_config.date" :min="minDate()" :max="maxDate() " class="w-8" />
+      <Calendar v-model="day_config.date" :min="minDate()" :max="maxDate() " class="w-max" />
+      <span v-if="fieldHasErrors('date')" class="text-xxs p_errors">{{ getFieldErrorMessage('date') }}</span>
     </div>
     <div v-for="(time_slot, index) in day_config.timeSlots" :key="index" class="flex flex-column gap-2">
-      <div class="flex align-items-center gap-2">
-        <label>Début: </label>
-        <InputHour v-model="time_slot.start" />
-        <label>Fin: </label>
-        <InputHour v-model="time_slot.end" />
+      <div class="flex flex-row align-items-center gap-2">
+        <div class="flex flex-column gap-2">
+          <label>Début: </label>
+          <InputHour v-model="time_slot.start" />
+        </div>
+        <div class="flex flex-column gap-2">
+          <label>Fin: </label>
+          <InputHour v-model="time_slot.end" />
+        </div>
       </div>
+      <span v-if="fieldHasErrors(`timeSlots_${index}`)" class="text-xxs p_errors">{{ getFieldErrorMessage(`timeSlots_${index}`) }}</span>
       <Button @click="removeTimeSlot(index)" :label="'Supprimer'" :type="'danger'" class="w-min" />
     </div>
-    <Button :label="'Ajouter une plage horaire'" @click="addTimeSlot" v-if="day_config.timeSlots.length < 2" class="w-max" />
+    <Button :label="'Ajouter une plage horaire'" @click="addTimeSlot" v-if="day_config.timeSlots.length < 2"
+      class="w-max" />
     <div class="flex align-items-center gap-2">
       <Checkbox v-model="day_config.multiple" />
       <p>Appliquez cette disponibilitée à d'autres dates</p>
@@ -98,6 +110,7 @@
             <Calendar v-model="other_date.date" :min="minDate()" :max="maxDate() " class="w-min" />
             <Button @click="removeExtraDate" :label="'Supprimer'" :type="'danger'" class="w-min" />
           </div>
+          <span v-if="fieldHasErrors(`dates_${index}`)" class="text-xxs p_errors">{{ getFieldErrorMessage(`dates_${index}`) }}</span>
         </div>
       </div>
       <Button :label="'Ajouter une autre date'" @click="addExtraDate" class="w-max" />

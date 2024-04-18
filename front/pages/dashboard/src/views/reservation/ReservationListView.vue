@@ -1,62 +1,34 @@
 <script setup>
 
-  import LoadableList from '@/components/LoadableList.vue';
+import { ref } from 'vue'
 
-  let getTime = (time) => {
-    let array_time = time.split(':')
-    return [array_time[0], array_time[1]].join('h')
-  };
-  let getDate = (date) => {
-    let new_date = new Date(date)
-    let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return new_date.toLocaleDateString('fr-FR', options);
-  };
+import PassedReservation from './PassedReservation.vue'
+import PendingReservation from './PendingResevation.vue'
+
+let current_tab = ref('');
 
 </script>
 
 <template>
   <section class="px-3">
     <header>
-      <div class="flex align-items-center justify-content-between">
-        <h2 class="text-xl">Centre de reservation</h2>
-        <Button :label="'Reserver un déplacement'" :type="'navigation'" :to="{ name: 'new_reservation' }" />
-      </div>
+      <h2 class="text-xl">Centre de reservation</h2>
+      <nav class="flex list-none">
+        <li class="px-2 text-sm cursor-pointer" :class="{ 'border_active pb-1 font-bold': current_tab === '' }"
+          @click="current_tab = ''">A venir</li>
+        <li class="px-2 text-sm cursor-pointer" :class="{ 'border_active pb-1 font-bold': current_tab === 'passed' }"
+          @click="current_tab = 'passed'">Effectués</li>
+      </nav>
     </header>
     <article class="mt-5">
-      <LoadableList api="/rides" :per_page="5" ref="$loadable_list">
-        <template #content="slotProps">
-          <Card>
-            <template #title>
-              <div class="flex justify-content-between align-items-center">
-                <h5 class="m-0">{{ getDate(slotProps.data.date) }} {{ getTime(slotProps.data.hour) }}</h5>
-                <aside class="flex flex-row gap-3">
-                  <Link :to="{ name: 'edit_reservation', params: { reservation_id: slotProps.data.id } }">
-                  <template #content>
-                    <Icon name="pencil" :size="14" :color="'#459ECC'" />
-                  </template>
-                  </Link>
-                  <Link :to="{ name: 'remove_reservation', params: { reservation_id: slotProps.data.id } }">
-                  <template #content>
-                    <Icon name="trash" :size="14" :color="'#FF5757'" />
-                  </template>
-                  </Link>
-                </aside>
-              </div>
-            </template>
-            <template #content>
-              <p class="m-0 mt-2 text-sm">{{ slotProps.data.departure }}</p>
-              <p class="m-0 mt-2 text-sm">{{ slotProps.data.destination }}</p>
-            </template>
-          </Card>
-        </template>
-        <template #no_results>
-          <aside class="flex flex-column align-items-center gap-2">
-            <h4 class="m-0">Vous n'avez pas encore effectué de reservation.</h4>
-          </aside>
-        </template>
-      </LoadableList>
+      <PassedReservation v-if="current_tab === 'passed'" />
+      <PendingReservation v-else />
     </article>
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.border_active {
+  border-bottom: 2px solid;
+}
+</style>

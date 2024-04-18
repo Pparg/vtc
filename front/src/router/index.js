@@ -271,7 +271,6 @@ router.beforeEach((to, from, next) => {
           next('/')
         }
       } else if (to.meta.user_only) {
-        console.log('here')
         if (role === 'user' || user.isAdmin) {
           next()
         } else {

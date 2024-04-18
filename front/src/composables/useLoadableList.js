@@ -42,7 +42,6 @@ export function useLoadableList(config) {
     }
   }
   let reloadData = () => {
-    console.log('reload')
     getPage()
   }
 

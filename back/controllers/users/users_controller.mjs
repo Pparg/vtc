@@ -119,12 +119,19 @@ let show = async (req, res) => {
 
 let admin_show = async (req, res) => {
   try {
-    console.log(req.params)
-    let user = await User.findByPk(req.params.id, {
-      attributes: ['birthday', 'created_at', 'first_name', 'last_name', 'email', 'last_login', 'phone_number']
-    })
-    if (user) {
-      res.successResponse(200, user.dataValues)
+    let is_number = parseInt(req.params.id)
+    let account
+    if (is_number) {
+      account = await Chofer.findByPk(req.params.id, {
+        attributes: ['created_at', 'first_name', 'last_name', 'email', 'phone_number']
+      })
+    } else {
+      account = await User.findByPk(req.params.id, {
+        attributes: ['birthday', 'created_at', 'first_name', 'last_name', 'email', 'last_login', 'phone_number']
+      })
+    }
+    if (account) {
+      res.successResponse(200, account.dataValues)
     } else {
       res.errorResponse(400, {
         message: "Cette utilisateur n'existe pas."

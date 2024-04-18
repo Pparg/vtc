@@ -1,10 +1,12 @@
 import sequelize from "../config/database.mjs"
 import Availability from "../models/Availability.mjs"
+import Rides from "../models/Rides.mjs"
+
 import { Op } from "sequelize"
 
 export function setAvailabilityConfig (type = null) {
   let now = new Date()
-  let today_start = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  let today_start = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
   let today_end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
   today_end.setMilliseconds(today_end.getMilliseconds() - 1)
 
@@ -39,32 +41,79 @@ export let getAvailabilityConfig = (today_start, today_end) => {
 }
 
 export async function updateAvailability(availability, chofer_id) {
-  let availability_edit = await sequelize.transaction()
+  let availability_edit = await sequelize.transaction();
+
   try {
-    for (let time_range of availability) {
-      await Availability.update({
-        start_time: time_range.start,
-        end_time: time_range.end
-      }, {
-        where: {
-          id: Number(time_range.id),
-          chofer_id: chofer_id
+    let errors = [];
+    let ids = availability.map(time_range => Number(time_range.id));
+
+    let availabilities = await Availability.findAll({
+      where: {
+        id: {
+          [Op.in]: ids
         },
-        transaction: availability_edit
-      })
+        chofer_id: chofer_id
+      }
+    });
+
+    for (let index = 0; index < availability.length; index++) {
+      let time_range = availability[index];
+      let currentAvailability = availabilities.find(av => av.id === Number(time_range.id)).dataValues;
+
+      let availability_date = new Date(currentAvailability.date);
+      let chofer_reservations = await Rides.count({
+        where: {
+          chofer_id: chofer_id,
+          date: availability_date,
+          hour: {
+            [Op.between]: [currentAvailability.start_time, currentAvailability.end_time]
+          }
+        }
+      });
+
+      if (chofer_reservations > 0) {
+        errors.push({
+          path: ['timeslot', index],
+          message: "Une reservation est organisée sur cette plage horaire."
+        });
+      } else {
+        await Availability.update({
+          start_time: time_range.start,
+          end_time: time_range.end
+        }, {
+          where: {
+            id: Number(time_range.id),
+            chofer_id: chofer_id
+          },
+          transaction: availability_edit
+        });
+      }
     }
-    await availability_edit.commit()
-    return {
-      success: true
+
+    await availability_edit.commit();
+
+    if (errors.length > 0) {
+      return {
+        success: false,
+        errors: errors
+      };
+    } else {
+      return {
+        success: true
+      };
     }
   } catch (error) {
-    await availability_edit.rollback()
+    await availability_edit.rollback();
     return {
       success: false,
-      errors: error
-    }
+      errors: [{
+        path: ['base'],
+        message: error
+      }]
+    };
   }
 }
+
 
 export async function checkAvailabilityAndCreateOrDestroy(chofer_id, type, data) {
   let availability_transaction = await sequelize.transaction()
@@ -115,4 +164,24 @@ export async function checkAvailabilityAndCreateOrDestroy(chofer_id, type, data)
       error: error
     }
   }
+}
+
+export async function canDelete(id, chofer_id) {
+  let availability = (await Availability.findOne({
+    where: {
+      id: id,
+      chofer_id: chofer_id
+    }
+  })).dataValues
+  let availability_date = new Date(availability.date).toISOString()
+  let chofer_reservations = await Rides.count({
+    where: {
+      chofer_id: chofer_id,
+      date: availability_date,
+      hour: {
+        [Op.between]: [availability.start_time, availability.end_time]
+      }
+    }
+  })
+  return !(chofer_reservations > 0)
 }

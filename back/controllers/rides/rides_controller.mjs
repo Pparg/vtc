@@ -5,49 +5,56 @@ import { getAvailableChofer, isUnique } from "../../utils/ride.js"
 import { Op } from 'sequelize'
 
 let get = async (req, res) => {
-  try {
-    let page = parseInt(req.query.page || 1)
-    let per_page = parseInt(req.query.per_page || 10)
-    let offset = (page - 1) * per_page
-    let user_reservation = await Rides.findAll({
+  let today = new Date()
+  let user_reservations
+  let page = parseInt(req.query.page || 1)
+  let per_page = parseInt(req.query.per_page || 10)
+  let offset = (page - 1) * per_page
+  if (req.query.type === 'passed') {
+    user_reservations = await Rides.findAndCountAll({
       where: {
-        user_id: req.user.id
+        user_id: req.user.id,
+        date: {
+          [Op.lte]: today
+        }
       },
-      order: [['date', 'DESC'], ['hour', 'ASC']],
+      order: [['date', 'ASC'], ['hour', 'ASC']],
       offset: offset,
       limit: per_page,
       attributes: ['id', 'destination', 'departure', 'date', 'hour']
     })
-    let total_count = await Rides.count({
+  } else {
+    user_reservations = await Rides.findAndCountAll({
       where: {
-        user_id: req.user.id
-      }
+        user_id: req.user.id,
+        date: {
+          [Op.gte]: today
+        }
+      },
+      order: [['date', 'ASC'], ['hour', 'ASC']],
+      offset: offset,
+      limit: per_page,
+      attributes: ['id', 'destination', 'departure', 'date', 'hour']
     })
-    let total_pages = Math.ceil(total_count / per_page)
-    res.successResponse(200, {
-      data: user_reservation,
-      current_page: page,
-      total_pages: total_pages,
-      total: total_count
-    })
-  } catch (error) {
-    res.errorResponse(500, error.message)
   }
+  let total_pages = Math.ceil(user_reservations.count / per_page)
+  res.successResponse(200, {
+    data: user_reservations.rows,
+    current_page: page,
+    total_pages: total_pages,
+    total: user_reservations.count
+  })
 }
 
 let get_resume = async (req, res) => {
   try {
     let today = new Date()
-    let current_hour = new Date(today.setHours(today.getHours() + 2, today.getMinutes(), 0, 0))
     let role_attribute = ['admin', 'user'].includes(req.user.role) ? 'user_id' : 'chofer_id'
     let last_reservation = await Rides.findAll({
       where: {
         [role_attribute]: req.user.id,
         date: {
           [Op.lte]: today
-        },
-        hour: {
-          [Op.lt]: current_hour
         }
       },
       limit: 3,
@@ -59,9 +66,6 @@ let get_resume = async (req, res) => {
         [role_attribute]: req.user.id,
         date: {
           [Op.gte]: today
-        },
-        hour: {
-          [Op.gte]: current_hour
         }
       },
       limit: 3,
@@ -82,7 +86,6 @@ let get_resume = async (req, res) => {
 let chofer_get = async (req, res) => {
   try {
     let today = new Date()
-    let current_hour = new Date(today.setHours(today.getHours() + 2, today.getMinutes(),0,0))
     let chofer_reservations
     let page = parseInt(req.query.page || 1)
     let per_page = parseInt(req.query.per_page || 10)
@@ -93,9 +96,6 @@ let chofer_get = async (req, res) => {
           chofer_id: req.user.id,
           date: {
             [Op.lte]: today
-          },
-          hour: {
-            [Op.lt]: current_hour
           }
         },
         include: [{
@@ -115,9 +115,6 @@ let chofer_get = async (req, res) => {
           chofer_id: req.user.id,
           date: {
             [Op.gte]: today
-          },
-          hour: {
-            [Op.gte]: current_hour
           }
         },
         include: [{

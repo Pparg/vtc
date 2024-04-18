@@ -8,6 +8,9 @@
 
   import { getAvailability, setEditModel, edit as editAvailability, formatEdit } from '@/utils/availability';
 
+  import { ErrorObject } from '@/composables/errors/index'
+
+
   let props = defineProps({
     availability_id: {
       type: Number,
@@ -15,6 +18,8 @@
     }
   });
   
+  let { setErrors, fieldHasErrors, getFieldErrorMessage, getErrors } = ErrorObject()
+
   let router = useRouter()
 
   let availability = await getAvailability(props.availability_id);
@@ -29,7 +34,7 @@
         router.push({ name: 'availability_overwiew'})
       }
     } catch (error) {
-      console.log(error)
+      setErrors(error.response.data.errors)
     }
   };
 
@@ -46,12 +51,15 @@
         <h4 class="m-0 p-0">{{ availability.data.day }}</h4>
         <Button :label="'Sauvegarder'" @click="handleEdit" class="w-max" />
       </div>
-      <div v-for="key in Object.keys(edited_availability)" class="flex flex-row align-items-center gap-2">
-        <span>De</span>
-        <InputHour v-model="edited_availability[key].start" />
-        <span>à</span>
-        <InputHour v-model="edited_availability[key].end" />
-      </div>
+      <aside v-for="key, index in Object.keys(edited_availability)" class="flex gap-2">
+        <div class="flex flex-row align-items-center gap-2">
+          <span>De</span>
+          <InputHour v-model="edited_availability[key].start" />
+          <span>à</span>
+          <InputHour v-model="edited_availability[key].end" />
+        </div>
+        <p v-if="fieldHasErrors(`timeslot_${index}`)" class="p_errors text-xxs">{{ getFieldErrorMessage(`timeslot_${index}`) }}</p>
+      </aside>
     </article>
   </section>
 </template>

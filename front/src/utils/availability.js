@@ -42,14 +42,6 @@ export function setEditModel( data ) {
   return model
 }
 
-export function setDeleteModel(data) {
-  let model = {}
-  data.forEach(item => {
-    model[item.id] = false
-  })
-  return model
-}
-
 export function generateDropdownOption () {
   let monthNames = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
   let current_month = new Date().getMonth()
@@ -80,10 +72,6 @@ export function formatEdit(data) {
   })
 }
 
-export function formatDelete(data) {
-  return Object.keys(data).filter((id) => data[id]).map(Number)
-}
-
 // API
 
 export async function get(type = null) {
@@ -106,6 +94,6 @@ export async function edit(data) {
   return await api.patch('/availability', data)
 }
 
-export async function remove(data) {
-  return await api.delete('/availability', data)
+export async function remove(id) {
+  return await api.delete(`/availability/${id}`)
 }

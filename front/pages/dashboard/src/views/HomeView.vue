@@ -25,12 +25,12 @@
       <h2>Mon activité</h2>
     </header>
     <article class="flex flex-column gap-3">
-      <Card>
+      <Card v-if="activity.passed.length > 0">
         <template #title>
           <h4 class="m-0">Dernieres reservation</h4>
         </template>
         <template #content>
-          <aside v-if="activity.passed.length > 0">
+          <aside>
             <table class="w-12 mt-2" >
               <thead class="">
                 <th class="text-xs text-left pb-2">Date</th>
@@ -63,13 +63,6 @@
                 </div>
               </template>
             </Link>
-          </aside>
-          <aside v-else-if="['admin', 'user'].includes(current_user.role)" class="flex flex-column align-items-center gap-2">
-            <p class="text-xs">Commencer dès maintenant</p>
-            <Button :label="'Faire un déplacement'" :to="{name: 'new_reservation'}" v-if="true" />
-          </aside>
-          <aside v-else class="flex flex-column align-items-center gap-2">
-            <p class="text-xs">Pas de reservation effectué</p>
           </aside>
         </template>
       </Card>

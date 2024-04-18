@@ -33,7 +33,8 @@
         <p class="m-0">{{ user.first_name }} {{ user.last_name }}</p>
         <p class="m-0" v-if="user.birthday">Date de naissance: {{ user.birthday }}</p>
       </div>
-      <p class="m-0 ">Client depuis le : {{ formatDate(user.created_at) }}</p>
+      <p class="m-0 " v-if="parseInt(user_id)">Chauffeur depuis le : {{ formatDate(user.created_at) }}</p>
+      <p class="m-0 " v-else>Client depuis le : {{ formatDate(user.created_at) }}</p>
       <p class="m-0" v-if="user.last_login">Dernieres connexion: {{ formatDate(user.last_login) }}</p>
       <div class="flex flex-column gap-3">
         <span>Contact: </span>

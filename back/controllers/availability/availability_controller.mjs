@@ -1,7 +1,7 @@
 import Availability from "../../models/Availability.mjs";
 import { Op } from "sequelize";
 
-import { setAvailabilityConfig, checkAvailabilityAndCreateOrDestroy, updateAvailability } from "../../utils/availability.js";
+import { setAvailabilityConfig, checkAvailabilityAndCreateOrDestroy, updateAvailability, canDelete } from "../../utils/availability.js";
 
 let index = async (req, res) => {
   try {
@@ -89,12 +89,8 @@ let update = async (req, res) => {
     if (availability_edition.success) {
       res.successResponse(204)
     } else {
-      res.errorResponse(400, [{
-        path: ['base'], 
-        message: availability_edition.errors
-      }])
+      res.errorResponse(400, availability_edition.errors)
     }
-
   } catch (error) {
     res.errorResponse(500, error.message)
   }
@@ -102,8 +98,21 @@ let update = async (req, res) => {
 
 let remove = async (req, res) => {
   try {
-    
-    res.successResponse(200, req.data)
+    let can_delete = await canDelete(req.params.id, req.user.id)
+    if (can_delete) {
+      await Availability.destroy({
+        where: {
+          id: req.params.id,
+          chofer_id: req.user.id
+        }
+      })
+      res.successResponse(204)
+    } else {
+      res.errorResponse(400, [{
+        path: ['base'],
+        message: "Suppression impossible, une reservation est organisée lors de cette plage horaire."
+      }])
+    }
   } catch (error) {
     res.errorResponse(500, error.message)
   }

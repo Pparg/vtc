@@ -27,10 +27,6 @@ let get = async (req, res) => {
   }
 }
 
-let show = async (req, res) => {
-
-}
-
 let create = async (req, res) => {
   try {
     let hashedPassword = await hashPassword(req.data.password)
@@ -59,13 +55,9 @@ let create = async (req, res) => {
   }
 }
 
-let edit = async (req, res) => {
-
-}
-
 
 let remove = async (req, res) => {
 
 }
 
-export { get, create, edit, remove, show }
+export { get, create, remove}

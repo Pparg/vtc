@@ -19,6 +19,11 @@
     return new_date.toLocaleDateString('fr-FR', options);
   };
 
+  let is_valid = (date) => {
+    let today = new Date()
+    return new Date(date) > today
+  };
+
 </script>
 
 <template>
@@ -41,16 +46,16 @@
             <template #title>
               <div class="flex align-items-center justify-content-between">
                 <h4 class="p-0 m-0">{{ getDate(slotProps.data.date) }}</h4>
-                <aside class="flex flex-row gap-3">
+                <aside class="flex flex-row gap-3" v-if="is_valid(slotProps.data.date)">
                   <Link :to="{ name: 'edit_availability', params: { availability_id: slotProps.data.id } }">
-                  <template #content>
-                    <Icon name="pencil" :size="14" :color="'#459ECC'" />
-                  </template>
+                    <template #content>
+                      <Icon name="pencil" :size="14" :color="'#459ECC'" />
+                    </template>
                   </Link>
                   <Link :to="{ name: 'remove_availability', params: { availability_id: slotProps.data.id } }">
-                  <template #content>
-                    <Icon name="trash" :size="14" :color="'#FF5757'" />
-                  </template>
+                    <template #content>
+                      <Icon name="trash" :size="14" :color="'#FF5757'" />
+                    </template>
                   </Link>
                 </aside>
               </div>
